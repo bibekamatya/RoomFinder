@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { getFavorites, getRoomById } from '@/lib/actions';
+import { getFavorites, getPropertyById } from '@/lib/actions';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
@@ -22,7 +22,7 @@ export default function FavoritesPage() {
         const localIds = JSON.parse(localStorage.getItem('favorites') || '[]');
         if (localIds.length > 0) {
           const rooms = await Promise.all(
-            localIds.map((id: string) => getRoomById(id))
+            localIds.map((id: string) => getPropertyById(id))
           );
           setFavorites(rooms.filter(Boolean));
         }
@@ -43,8 +43,8 @@ export default function FavoritesPage() {
             ? 'Start browsing rooms and save your favorites!' 
             : 'Your temporary favorites will appear here. Login to save them permanently.'}
         </p>
-        <Link href="/rooms">
-          <Button>Browse Rooms</Button>
+        <Link href="/property">
+          <Button>Browse Properties</Button>
         </Link>
       </div>
     );
@@ -62,7 +62,7 @@ export default function FavoritesPage() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {favorites.map((room) => (
-          <Link key={room.id} href={`/rooms/${room.id}`}>
+          <Link key={room.id} href={`/property/${room.id}`}>
             <div className="border rounded-lg p-4 hover:shadow-lg transition-shadow bg-white">
               <h3 className="font-semibold text-lg mb-2">{room.title}</h3>
               <p className="text-gray-600 text-sm mb-2">{room.location?.city}</p>

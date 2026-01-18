@@ -32,8 +32,7 @@ export default function AddPropertyPage() {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-900 dark:text-white mb-2 block">Description</label>
-                <Textarea placeholder="Describe your property..." rows={4} />
+                <Textarea label="Description" placeholder="Describe your property..." rows={4} />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">

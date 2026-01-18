@@ -1,7 +1,7 @@
 'use server';
 
 import { connectDB } from '../db/mongodb';
-import { User, Room, Inquiry } from '../db/models';
+import { User, Property, Inquiry } from '../db/models';
 import { auth } from '../auth';
 
 export async function getAllUsers() {
@@ -70,8 +70,8 @@ export async function deleteUser(userId: string) {
 
   await connectDB();
   
-  // Delete user's rooms
-  await Room.deleteMany({ ownerId: userId });
+  // Delete user's properties
+  await Property.deleteMany({ ownerId: userId });
   
   // Delete user's inquiries
   await Inquiry.deleteMany({ userId: userId });
@@ -94,10 +94,10 @@ export async function getUserStats(userId?: string) {
 
   await connectDB();
   
-  const roomCount = await Room.countDocuments({ ownerId: targetUserId });
+  const propertyCount = await Property.countDocuments({ ownerId: targetUserId });
   const inquiryCount = await Inquiry.countDocuments({ userId: targetUserId });
   const user = await User.findById(targetUserId).lean();
   const favoriteCount = user?.favorites?.length || 0;
   
-  return { roomCount, inquiryCount, favoriteCount };
+  return { propertyCount, inquiryCount, favoriteCount };
 }

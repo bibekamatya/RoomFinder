@@ -44,7 +44,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       <div className="w-full max-w-md px-6">
         <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
           <CardHeader className="text-center pb-2">
@@ -115,7 +115,7 @@ export default function SignupPage() {
                   <ErrorMessage message={error} className="text-xs" />
                 </div>
               )}
-              <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white" disabled={loading}>
+              <Button type="submit" className="w-full bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white" disabled={loading}>
                 {loading ? "Creating account..." : "Create Account"}
               </Button>
             </form>

@@ -21,7 +21,7 @@ export function BookingButton({ roomId, ownerId }: { roomId: string; ownerId: st
     }
 
     // Open booking form or navigate to booking page
-    router.push(`/rooms/${roomId}/book`);
+    router.push(`/property/${roomId}/book`);
   };
 
   return (

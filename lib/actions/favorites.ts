@@ -1,50 +1,51 @@
-'use server';
+"use server";
 
-import { connectDB } from '../db/mongodb';
-import { User, Room } from '../db/models';
-import { auth } from '../auth';
+import { connectDB } from "../db/mongodb";
+import { User, Property } from "../db/models";
+import { auth } from "../auth";
 
 export async function getFavorites() {
   const session = await auth();
   if (!session?.user?.id) return [];
-  
+
   await connectDB();
   const user = await User.findById(session.user.id).lean();
   if (!user?.favorites?.length) return [];
-  
-  const rooms = await Room.find({ _id: { $in: user.favorites } }).lean();
-  return rooms.map(room => ({ ...room, id: room._id.toString() }));
+
+  const properties = await Property.find({ _id: { $in: user.favorites } }).lean();
+  return properties.map((property) => ({
+    ...property,
+    id: property._id.toString(),
+  }));
 }
 
-export async function addFavorite(roomId: string) {
+export async function addFavorite(propertyId: string) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error('Unauthorized');
-  
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
   await connectDB();
-  await User.findByIdAndUpdate(
-    session.user.id,
-    { $addToSet: { favorites: roomId } }
-  );
+  await User.findByIdAndUpdate(session.user.id, {
+    $addToSet: { favorites: propertyId },
+  });
   return { success: true };
 }
 
-export async function removeFavorite(roomId: string) {
+export async function removeFavorite(propertyId: string) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error('Unauthorized');
-  
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
   await connectDB();
-  await User.findByIdAndUpdate(
-    session.user.id,
-    { $pull: { favorites: roomId } }
-  );
+  await User.findByIdAndUpdate(session.user.id, {
+    $pull: { favorites: propertyId },
+  });
   return { success: true };
 }
 
-export async function isFavorite(roomId: string) {
+export async function isFavorite(propertyId: string) {
   const session = await auth();
   if (!session?.user?.id) return false;
-  
+
   await connectDB();
   const user = await User.findById(session.user.id).lean();
-  return user?.favorites?.includes(roomId) || false;
+  return user?.favorites?.includes(propertyId) || false;
 }

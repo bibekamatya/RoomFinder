@@ -1,12 +1,12 @@
 'use server';
 
 import { connectDB } from '../db/mongodb';
-import { Room } from '../db/models';
+import { Property } from '../db/models';
 
-export async function searchRooms(query: string) {
+export async function searchProperties(query: string) {
   await connectDB();
   
-  const rooms = await Room.find({
+  const properties = await Property.find({
     $or: [
       { title: new RegExp(query, 'i') },
       { description: new RegExp(query, 'i') },
@@ -15,13 +15,13 @@ export async function searchRooms(query: string) {
     ]
   }).lean();
   
-  return rooms.map(room => ({ ...room, id: room._id.toString() }));
+  return properties.map(property => ({ ...property, id: property._id.toString() }));
 }
 
 export async function getCities() {
   await connectDB();
   
-  const cities = await Room.distinct('location.city');
+  const cities = await Property.distinct('location.city');
   return cities.filter(Boolean);
 }
 
@@ -29,17 +29,17 @@ export async function getAreas(city?: string) {
   await connectDB();
   
   const query = city ? { 'location.city': city } : {};
-  const areas = await Room.distinct('location.area', query);
+  const areas = await Property.distinct('location.area', query);
   return areas.filter(Boolean);
 }
 
 export async function getPriceRange() {
   await connectDB();
   
-  const rooms = await Room.find({}).select('price').lean();
-  if (rooms.length === 0) return { min: 0, max: 0 };
+  const properties = await Property.find({}).select('price').lean();
+  if (properties.length === 0) return { min: 0, max: 0 };
   
-  const prices = rooms.map(r => r.price);
+  const prices = properties.map(r => r.price);
   return {
     min: Math.min(...prices),
     max: Math.max(...prices),

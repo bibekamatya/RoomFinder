@@ -8,7 +8,7 @@ export default function MarketingLayout({
   return (
     <>
       <NavBar />
-      {children}
+      <div className="mt-14"> {children}</div>
     </>
   );
 }

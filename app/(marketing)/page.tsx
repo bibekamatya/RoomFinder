@@ -125,7 +125,7 @@ export default function LandingPage() {
                       NPR {room.price}
                     </span>
                     <Button size="sm" variant="outline" asChild>
-                      <Link href="/rooms">View</Link>
+                      <Link href="/property">View</Link>
                     </Button>
                   </div>
                 </CardContent>
@@ -193,7 +193,7 @@ export default function LandingPage() {
               size="lg"
               className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8"
             >
-              <Link href="/rooms">Browse Rooms</Link>
+              <Link href="/property">Browse Properties</Link>
             </Button>
             <Button
               asChild

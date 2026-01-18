@@ -1,30 +1,42 @@
 import mongoose from 'mongoose';
 
-const RoomSchema = new mongoose.Schema({
+const PropertySchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
+  propertyType: { type: String, enum: ['room', 'flat', 'house', 'hostel', 'pg'], required: true },
+  roomType: { type: String, enum: ['single', 'shared'], required: true },
   price: { type: Number, required: true },
-  priceType: { type: String, enum: ['monthly', 'daily'], required: true },
-  propertyType: { type: String, enum: ['apartment', 'room', 'house'], required: true },
+  securityDeposit: { type: Number },
+  availableFrom: { type: String, required: true },
+  minimumStay: { type: String },
   location: {
-    address: String,
-    city: String,
-    area: String,
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    area: { type: String, required: true },
   },
-  amenities: [String],
-  images: [String],
   specifications: {
     size: Number,
     rooms: Number,
     bathrooms: Number,
-    furnished: Boolean,
+    furnished: { type: Boolean, default: false },
+  },
+  amenities: [String],
+  suitableFor: String,
+  houseRules: {
+    smoking: { type: Boolean, default: false },
+    pets: { type: Boolean, default: false },
+  },
+  contact: {
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
   },
   availability: { type: String, enum: ['available', 'rented', 'pending'], default: 'available' },
   ownerId: { type: String, required: true },
+  images: [String],
 }, { timestamps: true });
 
 const InquirySchema = new mongoose.Schema({
-  roomId: { type: String, required: true },
+  propertyId: { type: String, required: true },
   userId: { type: String, required: true },
   tenantName: { type: String, required: true },
   tenantEmail: { type: String, required: true },
@@ -44,6 +56,6 @@ const UserSchema = new mongoose.Schema({
   favorites: [{ type: String }],
 }, { timestamps: true });
 
-export const Room = mongoose.models.Room || mongoose.model('Room', RoomSchema);
+export const Property = mongoose.models.Property || mongoose.model('Property', PropertySchema);
 export const Inquiry = mongoose.models.Inquiry || mongoose.model('Inquiry', InquirySchema);
 export const User = mongoose.models.User || mongoose.model('User', UserSchema);

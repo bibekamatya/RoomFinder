@@ -5,31 +5,31 @@ import Link from "next/link";
 import Logo from "../../Logo";
 import { Button } from "../../ui/button";
 import { useUser } from "@/hooks/useUser";
+import { usePathname } from "next/navigation";
 
 const NavBar = () => {
   const { user, isAuthenticated } = useUser();
+  const pathname = usePathname();
 
-  const publicRoutes = [
-    { href: "/rooms", label: "Browse Rooms" },
-  ];
+  const publicRoutes = [{ href: "/property", label: "Properties" }];
 
   const getAuthenticatedRoutes = () => {
     if (!user) return publicRoutes;
-    
-    const baseRoutes = [{ href: "/rooms", label: "Browse Rooms" }];
-    
+
+    const baseRoutes = [{ href: "/property", label: "Properties" }];
+
     if (user.role === "user") {
       return [
-        ...baseRoutes, 
+        ...baseRoutes,
         { href: "/favorites", label: "Favorites" },
-        { href: "/add-property", label: "List Property" }
+        { href: "/add-property", label: "List Property" },
       ];
     }
-    
+
     if (user.role === "owner" || user.role === "admin") {
       return [...baseRoutes, { href: "/dashboard", label: "Dashboard" }];
     }
-    
+
     return baseRoutes;
   };
 
@@ -45,15 +45,22 @@ const NavBar = () => {
           </span>
         </Link>
         <div className="flex items-center gap-6">
-          {routes.map((route) => (
-            <Link
-              key={route.href}
-              href={route.href}
-              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              {route.label}
-            </Link>
-          ))}
+          {routes.map((route) => {
+            const isActive = pathname === route.href || pathname.startsWith(route.href + "/");
+            return (
+              <Link
+                key={route.href}
+                href={route.href}
+                className={`text-sm font-medium transition-colors px-3 py-1.5 rounded-lg ${
+                  isActive
+                    ? "text-white bg-gradient-to-r from-purple-600 to-blue-600"
+                    : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+              >
+                {route.label}
+              </Link>
+            );
+          })}
           {isAuthenticated ? (
             <UserDropdown />
           ) : (

@@ -1,14 +1,28 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import { Label } from "./label";
 
 interface InputProps extends React.ComponentProps<"input"> {
   error?: string;
+  label?: string;
+  labelClassName?: string;
 }
 
-function Input({ className, type, error, ...props }: InputProps) {
+function Input({
+  className,
+  type,
+  error,
+  label = "",
+  labelClassName = "",
+  required,
+  ...props
+}: InputProps) {
   return (
     <div className="w-full">
+      {label && (
+        <Label label={label} className={labelClassName} required={required} />
+      )}
       <input
         type={type}
         data-slot="input"
@@ -21,9 +35,11 @@ function Input({ className, type, error, ...props }: InputProps) {
         )}
         {...props}
       />
-      {error && <p className="text-red-600 dark:text-red-400 text-sm mt-1">{error}</p>}
+      {error && (
+        <p className="text-red-600 dark:text-red-400 text-xs mt-1">{error}</p>
+      )}
     </div>
-  )
+  );
 }
 
-export { Input }
+export { Input };

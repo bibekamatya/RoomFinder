@@ -1,29 +1,3 @@
-export interface Room {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  priceType: "monthly" | "daily";
-  propertyType: "apartment" | "room" | "house";
-  location: {
-    address: string;
-    city: string;
-    area: string;
-  };
-  amenities: string[];
-  images: string[];
-  specifications: {
-    size?: number;
-    rooms?: number;
-    bathrooms?: number;
-    furnished: boolean;
-  };
-  availability: "available" | "rented" | "pending";
-  ownerId: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface Inquiry {
   id: string;
   roomId: string;
