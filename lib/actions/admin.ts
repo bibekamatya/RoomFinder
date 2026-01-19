@@ -45,15 +45,9 @@ export async function getRecentActivity() {
     .limit(5)
     .lean();
 
-  const recentProperty = await Property.find({})
-    .sort({ createdAt: -1 })
-    .limit(5)
-    .lean();
+  const recentProperty = await Property.find({}).sort({ createdAt: -1 }).limit(5).lean();
 
-  const recentInquiries = await Inquiry.find({})
-    .sort({ createdAt: -1 })
-    .limit(5)
-    .lean();
+  const recentInquiries = await Inquiry.find({}).sort({ createdAt: -1 }).limit(5).lean();
 
   return {
     recentUsers: recentUsers.map((u) => ({ ...u, id: u._id.toString() })),

@@ -6,15 +6,9 @@ export const propertySchema = object({
   propertyType: string()
     .oneOf(["room", "flat", "house", "hostel", "pg"])
     .required("Property type is required"),
-  roomType: string()
-    .oneOf(["single", "shared"])
-    .required("Room type is required"),
-  price: number()
-    .required("Price is required")
-    .positive("Price must be positive"),
-  securityDeposit: number()
-    .positive("Security deposit must be positive")
-    .optional(),
+  roomType: string().oneOf(["single", "shared"]).required("Room type is required"),
+  price: number().required("Price is required").positive("Price must be positive"),
+  securityDeposit: number().positive("Security deposit must be positive").optional(),
   availableFrom: string().required("Available from date is required"),
   minimumStay: string().optional(),
   location: object({
@@ -25,10 +19,7 @@ export const propertySchema = object({
   specifications: object({
     size: number().positive("Size must be positive").optional(),
     rooms: number().positive("Rooms must be positive").integer().optional(),
-    bathrooms: number()
-      .positive("Bathrooms must be positive")
-      .integer()
-      .optional(),
+    bathrooms: number().positive("Bathrooms must be positive").integer().optional(),
     furnished: boolean().required(),
   }).required(),
   amenities: array().of(string()).default([]),

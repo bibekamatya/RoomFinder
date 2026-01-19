@@ -1,122 +1,44 @@
-import { useUser } from "@/hooks/useUser";
-import {
-  Link,
-  LayoutDashboard,
-  Building2,
-  MessageSquare,
-  Settings,
-  Users,
-  PlusCircle,
-} from "lucide-react";
-import NextLink from "next/link";
+"use client";
+
+import { Button } from "@/components/ui/button";
+import UserDropdown from "@/components/UserDropdown";
+import NotificationBell from "@/components/notifications/NotificationBell";
+import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-const Navbar = () => {
-  const { user } = useUser();
+interface NavbarProps {
+  setSidebarOpen: (open: boolean) => void;
+}
+
+const Navbar = ({ setSidebarOpen }: NavbarProps) => {
   const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path;
-
   return (
-    <nav className="p-2 space-y-0.5">
-      {user?.role === "admin" ? (
-        // Admin navigation
-        <>
-          <NextLink
-            href="/dashboard/admin"
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm ${
-              isActive("/dashboard/admin")
-                ? "bg-blue-50 text-blue-700 font-medium"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <LayoutDashboard className="h-4 w-4" />
-            Admin Dashboard
-          </NextLink>
-          <NextLink
-            href="/dashboard/admin/users"
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm ${
-              isActive("/dashboard/admin/users")
-                ? "bg-blue-50 text-blue-700 font-medium"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <Users className="h-4 w-4" />
-            Manage Users
-          </NextLink>
-          <NextLink
-            href="/dashboard/settings"
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm ${
-              isActive("/dashboard/settings")
-                ? "bg-blue-50 text-blue-700 font-medium"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <Settings className="h-4 w-4" />
-            Settings
-          </NextLink>
-        </>
-      ) : (
-        // Owner navigation
-        <>
-          <NextLink
-            href="/dashboard"
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm ${
-              isActive("/dashboard")
-                ? "bg-blue-50 text-blue-700 font-medium"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <LayoutDashboard className="h-4 w-4" />
-            Dashboard
-          </NextLink>
-          <NextLink
-            href="/dashboard/listings"
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm ${
-              isActive("/dashboard/listings")
-                ? "bg-blue-50 text-blue-700 font-medium"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <Building2 className="h-4 w-4" />
-            My Listings
-          </NextLink>
-          <NextLink
-            href="/dashboard/add"
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm ${
-              isActive("/dashboard/add")
-                ? "bg-blue-50 text-blue-700 font-medium"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <PlusCircle className="h-4 w-4" />
-            Add Property
-          </NextLink>
-          <NextLink
-            href="/dashboard/inquiries"
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm ${
-              isActive("/dashboard/inquiries")
-                ? "bg-blue-50 text-blue-700 font-medium"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <MessageSquare className="h-4 w-4" />
-            Inquiries
-          </NextLink>
-          <NextLink
-            href="/dashboard/settings"
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm ${
-              isActive("/dashboard/settings")
-                ? "bg-blue-50 text-blue-700 font-medium"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <Settings className="h-4 w-4" />
-            Settings
-          </NextLink>
-        </>
-      )}
-    </nav>
+    <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6">
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="lg:hidden"
+          onClick={() => setSidebarOpen(true)}
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+        <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+          {pathname === "/admin"
+            ? "Dashboard"
+            : pathname
+                .split("/")
+                .pop()
+                ?.replace("-", " ")
+                .replace(/\b\w/g, (l) => l.toUpperCase())}
+        </h1>
+      </div>
+      <div className="flex items-center gap-3">
+        <NotificationBell />
+        <UserDropdown />
+      </div>
+    </header>
   );
 };
 

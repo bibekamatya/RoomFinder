@@ -7,11 +7,7 @@ interface LogoProps {
   priority?: boolean;
 }
 
-export default function Logo({
-  size = 120,
-  href = "/",
-  priority = false,
-}: LogoProps) {
+export default function Logo({ size = 120, href = "/", priority = false }: LogoProps) {
   const logo = (
     <Image
       src="/logo.png"

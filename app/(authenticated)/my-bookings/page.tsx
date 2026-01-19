@@ -1,5 +1,5 @@
-import { getMyInquiries } from '@/lib/actions';
-import { Badge } from '@/components/ui/badge';
+import { getMyInquiries } from "@/lib/actions";
+import { Badge } from "@/components/ui/badge";
 
 export default async function MyBookingsPage() {
   const inquiries = await getMyInquiries();
@@ -24,10 +24,15 @@ export default async function MyBookingsPage() {
                 <h3 className="font-semibold text-lg">Room ID: {inquiry.roomId}</h3>
                 <p className="text-sm text-gray-600">Move-in: {inquiry.moveInDate}</p>
               </div>
-              <Badge variant={
-                inquiry.status === 'approved' ? 'default' :
-                inquiry.status === 'rejected' ? 'destructive' : 'secondary'
-              }>
+              <Badge
+                variant={
+                  inquiry.status === "approved"
+                    ? "default"
+                    : inquiry.status === "rejected"
+                      ? "destructive"
+                      : "secondary"
+                }
+              >
                 {inquiry.status}
               </Badge>
             </div>

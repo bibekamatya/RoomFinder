@@ -58,13 +58,23 @@ export async function createInquiry(data: {
   }
 
   const inquiry = await Inquiry.create({ ...data, userId: session.user.id });
+  
+  // Create notification for property owner
+  if (property) {
+    const { Notification } = await import("../db/models");
+    await Notification.create({
+      userId: property.ownerId,
+      title: "New Inquiry",
+      message: `${data.tenantName} interested in "${property.title}"`,
+      type: "new_inquiry",
+      relatedId: inquiry._id.toString(),
+    });
+  }
+  
   return { ...inquiry.toObject(), id: inquiry._id.toString() };
 }
 
-export async function updateInquiryStatus(
-  id: string,
-  status: "pending" | "approved" | "rejected"
-) {
+export async function updateInquiryStatus(id: string, status: "pending" | "approved" | "rejected") {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
 
@@ -75,18 +85,24 @@ export async function updateInquiryStatus(
   if (!inquiry) throw new Error("Inquiry not found");
 
   const property = await Property.findById(inquiry.propertyId).lean();
-  if (
-    property?.ownerId !== session.user.id &&
-    session.user.role !== "admin"
-  ) {
+  if (property?.ownerId !== session.user.id && session.user.role !== "admin") {
     throw new Error("Unauthorized");
   }
 
-  const updated = await Inquiry.findByIdAndUpdate(
-    id,
-    { status },
-    { new: true }
-  ).lean();
+  const updated = await Inquiry.findByIdAndUpdate(id, { status }, { new: true }).lean();
+  
+  // Create notification for tenant
+  if (updated) {
+    const { Notification } = await import("../db/models");
+    await Notification.create({
+      userId: inquiry.userId,
+      title: `Inquiry ${status}`,
+      message: `Inquiry ${status} for "${property?.title}"`,
+      type: "inquiry_status",
+      relatedId: id,
+    });
+  }
+  
   return updated ? { ...updated, id: updated._id.toString() } : null;
 }
 

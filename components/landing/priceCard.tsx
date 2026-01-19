@@ -1,35 +1,29 @@
-import { ProPerty } from "@/lib/types/data";
+import { Property } from "@/lib/types/data";
 import { Mail, Phone } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface PriceCardProps {
-  property: ProPerty;
+  property: Property;
 }
 const PriceCard = ({ property }: PriceCardProps) => {
   return (
     <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg border sticky top-20">
       <div className="mb-6">
-        <p className="text-3xl font-bold text-blue-600">
-          NPR {property.price.toLocaleString()}
-        </p>
+        <p className="text-3xl font-bold text-blue-600">NPR {property.price.toLocaleString()}</p>
         <p className="text-sm text-muted-foreground mt-1">per month</p>
       </div>
 
       {property.securityDeposit && (
         <div className="mb-6 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <p className="text-xs text-muted-foreground">Security Deposit</p>
-          <p className="text-base font-semibold">
-            NPR {property.securityDeposit.toLocaleString()}
-          </p>
+          <p className="text-base font-semibold">NPR {property.securityDeposit.toLocaleString()}</p>
         </div>
       )}
 
       <div className="space-y-3 mb-6 pb-6 border-b">
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Property Type</span>
-          <span className="font-semibold capitalize">
-            {property.propertyType}
-          </span>
+          <span className="font-semibold capitalize">{property.propertyType}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Room Type</span>
@@ -62,9 +56,7 @@ const PriceCard = ({ property }: PriceCardProps) => {
         </div>
       </div>
 
-      <Button className="w-full h-12 text-base font-semibold">
-        Contact Owner
-      </Button>
+      <Button className="w-full h-12 text-base font-semibold">Contact Owner</Button>
     </div>
   );
 };

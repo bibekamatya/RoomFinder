@@ -2,23 +2,17 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "./label";
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   labelClassName?: string;
   error?: string;
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  (
-    { className, label, error, labelClassName = "", required, ...props },
-    ref
-  ) => {
+  ({ className, label, error, labelClassName = "", required, ...props }, ref) => {
     return (
       <div className="w-full">
-        {label && (
-          <Label label={label} className={labelClassName} required={required} />
-        )}
+        {label && <Label label={label} className={labelClassName} required={required} />}
         <textarea
           aria-invalid={!!error}
           className={cn(
@@ -29,9 +23,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           {...props}
         />
-        {error && (
-          <p className="text-red-600 dark:text-red-400 text-xs mt-1">{error}</p>
-        )}
+        {error && <p className="text-red-600 dark:text-red-400 text-xs mt-1">{error}</p>}
       </div>
     );
   }

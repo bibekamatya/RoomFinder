@@ -1,4 +1,4 @@
-export interface ProPerty {
+export interface Property {
   id: string;
   title: string;
   description: string;
@@ -31,12 +31,21 @@ export interface ProPerty {
   };
   availability: "available" | "rented" | "pending";
   ownerId: string;
-  images?: string[];
+  images: string[];
   createdAt: string;
   updatedAt: string;
+  views: number;
 }
 
-export type PropertyFormData = Omit<
-  ProPerty,
-  "id" | "ownerId" | "createdAt" | "updatedAt"
->;
+export interface Notification {
+  id: string;
+  userId: string;
+  title: string;
+  message: string;
+  type: "new_inquiry" | "inquiry_status" | "property_views" | "stale_property";
+  read: boolean;
+  relatedId?: string;
+  createdAt: string;
+}
+
+export type PropertyFormData = Omit<Property, "id" | "ownerId" | "createdAt" | "updatedAt" | "views">;

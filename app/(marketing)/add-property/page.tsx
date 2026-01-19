@@ -18,8 +18,8 @@ export default async function AddPropertyPage() {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6">List Your Property</h1>
       <p className="text-gray-600 mb-8">
-        Add your first property and start earning. You&apos;ll be upgraded to an
-        owner account automatically.
+        Add your first property and start earning. You&apos;ll be upgraded to an owner account
+        automatically.
       </p>
 
       {/* Add property form here */}

@@ -7,3 +7,5 @@ export * from "./admin";
 export * from "./search";
 export * from "./password";
 export * from "./sync";
+export * from "./dashboard";
+export * from "./notifications";

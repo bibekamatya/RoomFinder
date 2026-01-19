@@ -22,9 +22,7 @@ export default function AdminDashboard() {
       key: "role",
       label: "Role",
       render: (user: any) => (
-        <Badge variant={user.role === "admin" ? "default" : "secondary"}>
-          {user.role}
-        </Badge>
+        <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
       ),
     },
     {

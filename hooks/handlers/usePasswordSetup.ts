@@ -27,7 +27,7 @@ export const usePasswordSetup = () => {
 
     startTransition(async () => {
       const result = await setPassword(password);
-      
+
       if (result.error) {
         setError(result.error);
       } else {

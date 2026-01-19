@@ -21,9 +21,7 @@ export default function UsersPage() {
       key: "role",
       label: "Role",
       render: (user: any) => (
-        <Badge variant={user.role === "admin" ? "default" : "secondary"}>
-          {user.role}
-        </Badge>
+        <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
       ),
     },
     {

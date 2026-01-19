@@ -2,7 +2,7 @@
 
 import { connectDB } from "../db/mongodb";
 import { Property, User, Inquiry } from "../db/models";
-import { ProPerty } from "../types/data";
+import { Property as PropertyType, PropertyFormData } from "../types/data";
 import { auth } from "../auth";
 import { uploadImage, deleteImages } from "../cloudinary";
 
@@ -29,30 +29,61 @@ export async function getProperties(filters?: {
   }
 
   const properties = await Property.find(query).lean();
-  return JSON.parse(JSON.stringify(
-    properties.map((property) => ({ 
-      ...property, 
-      _id: undefined,
-      id: property._id.toString() 
-    }))
-  ));
+  return JSON.parse(
+    JSON.stringify(
+      properties.map((property) => ({
+        ...property,
+        _id: undefined,
+        id: property._id.toString(),
+      }))
+    )
+  );
 }
 
 export async function getPropertyById(id: string) {
   await connectDB();
-  
+
   try {
     const property = await Property.findById(id).lean();
     if (!property) return null;
 
     const owner = await User.findById(property.ownerId).select("name email").lean();
-    return JSON.parse(JSON.stringify({
-      ...property,
-      id: property._id.toString(),
-      owner: owner ? { name: owner.name, email: owner.email } : null,
-    }));
+    return JSON.parse(
+      JSON.stringify({
+        ...property,
+        id: property._id.toString(),
+        owner: owner ? { name: owner.name, email: owner.email } : null,
+      })
+    );
   } catch (error) {
     return null;
+  }
+}
+
+export async function incrementPropertyViews(id: string) {
+  await connectDB();
+  try {
+    const property = await Property.findByIdAndUpdate(id, { $inc: { views: 1 } }).lean();
+
+    // Create notification for property owner
+    if (property) {
+      const { Notification } = await import("../db/models");
+      const viewCount = (property.views || 0) + 1;
+
+      // Only notify on milestones: 1, 5, 10, 25, 50, 100, etc.
+      const milestones = [1, 5, 10, 25, 50, 100, 250, 500, 1000];
+      if (milestones.includes(viewCount)) {
+        await Notification.create({
+          userId: property.ownerId,
+          title: "Property View Milestone",
+          message: `${viewCount} views on "${property.title}"`,
+          type: "general",
+          relatedId: id,
+        });
+      }
+    }
+  } catch (error) {
+    // Silently fail - view tracking is not critical
   }
 }
 
@@ -61,25 +92,29 @@ export async function getPropertiesByCity(city: string) {
   const properties = await Property.find({
     "location.city": new RegExp(city, "i"),
   }).lean();
-  return JSON.parse(JSON.stringify(
-    properties.map((property) => ({ 
-      ...property,
-      _id: undefined, 
-      id: property._id.toString() 
-    }))
-  ));
+  return JSON.parse(
+    JSON.stringify(
+      properties.map((property) => ({
+        ...property,
+        _id: undefined,
+        id: property._id.toString(),
+      }))
+    )
+  );
 }
 
 export async function getPropertiesByOwner(ownerId: string) {
   await connectDB();
   const properties = await Property.find({ ownerId }).lean();
-  return JSON.parse(JSON.stringify(
-    properties.map((property) => ({ 
-      ...property,
-      _id: undefined, 
-      id: property._id.toString() 
-    }))
-  ));
+  return JSON.parse(
+    JSON.stringify(
+      properties.map((property) => ({
+        ...property,
+        _id: undefined,
+        id: property._id.toString(),
+      }))
+    )
+  );
 }
 
 export async function getMyProperties() {
@@ -88,13 +123,15 @@ export async function getMyProperties() {
 
   await connectDB();
   const properties = await Property.find({ ownerId: session.user.id }).lean();
-  return JSON.parse(JSON.stringify(
-    properties.map((property) => ({ 
-      ...property,
-      _id: undefined, 
-      id: property._id.toString() 
-    }))
-  ));
+  return JSON.parse(
+    JSON.stringify(
+      properties.map((property) => ({
+        ...property,
+        _id: undefined,
+        id: property._id.toString(),
+      }))
+    )
+  );
 }
 
 export async function getAllProperties() {
@@ -103,17 +140,19 @@ export async function getAllProperties() {
 
   await connectDB();
   const properties = await Property.find({}).lean();
-  return JSON.parse(JSON.stringify(
-    properties.map((property) => ({ 
-      ...property,
-      _id: undefined, 
-      id: property._id.toString() 
-    }))
-  ));
+  return JSON.parse(
+    JSON.stringify(
+      properties.map((property) => ({
+        ...property,
+        _id: undefined,
+        id: property._id.toString(),
+      }))
+    )
+  );
 }
 
 export async function createProperty(
-  data: Omit<ProPerty, "id" | "createdAt" | "updatedAt" | "ownerId" | "images">,
+  data: PropertyFormData,
   imageFiles: File[]
 ) {
   const session = await auth();
@@ -122,17 +161,17 @@ export async function createProperty(
   await connectDB();
 
   let uploadedImages: string[] = [];
-  
+
   try {
     // Upload images
-    const uploadPromises = imageFiles.map(file => uploadImage(file));
-    uploadedImages = await Promise.all(uploadPromises) as string[];
+    const uploadPromises = imageFiles.map((file) => uploadImage(file));
+    uploadedImages = (await Promise.all(uploadPromises)) as string[];
 
     // Create property with image URLs
-    const property = await Property.create({ 
-      ...data, 
+    const property = await Property.create({
+      ...data,
       images: uploadedImages,
-      ownerId: session.user.id 
+      ownerId: session.user.id,
     });
 
     const user = await User.findById(session.user.id);
@@ -145,25 +184,26 @@ export async function createProperty(
   } catch (error) {
     // If anything fails, delete uploaded images
     if (uploadedImages.length) {
-      const { deleteImages } = await import('../cloudinary');
+      const { deleteImages } = await import("../cloudinary");
       await deleteImages(uploadedImages);
     }
     throw error;
   }
 }
 
-export async function updateProperty(id: string, data: Partial<ProPerty>) {
+export async function updateProperty(id: string, data: Partial<PropertyType>) {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
 
   await connectDB();
 
-  const query =
-    session.user.role === "admin"
-      ? { _id: id }
-      : { _id: id, ownerId: session.user.id };
+  const query = session.user.role === "admin" ? { _id: id } : { _id: id, ownerId: session.user.id };
 
-  const property = await Property.findOneAndUpdate(query, data, { new: true }).lean();
+  const property = await Property.findOneAndUpdate(
+    query,
+    { ...data, lastUpdated: new Date() },
+    { new: true }
+  ).lean();
   return property ? { ...property, id: property._id.toString() } : null;
 }
 
@@ -173,15 +213,12 @@ export async function deleteProperty(id: string) {
 
   await connectDB();
 
-  const query =
-    session.user.role === "admin"
-      ? { _id: id }
-      : { _id: id, ownerId: session.user.id };
+  const query = session.user.role === "admin" ? { _id: id } : { _id: id, ownerId: session.user.id };
 
   // Get property to delete images
   const property = await Property.findOne(query).lean();
   if (property?.images?.length) {
-    const { deleteImages } = await import('../cloudinary');
+    const { deleteImages } = await import("../cloudinary");
     await deleteImages(property.images);
   }
 

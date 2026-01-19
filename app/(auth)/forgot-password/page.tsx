@@ -33,16 +33,16 @@ export default function ForgotPasswordPage() {
       setError("Password must be at least 6 characters");
       return;
     }
-    
+
     setLoading(true);
     const result = await verifyUserAndResetPassword(email, mobile, newPassword);
-    
+
     if (result.error) {
       setError(result.error);
       setLoading(false);
       return;
     }
-    
+
     toast.success("Password reset successful! Please login.");
     setTimeout(() => router.push("/login"), 1500);
   };
@@ -54,14 +54,10 @@ export default function ForgotPasswordPage() {
           <CardHeader className="text-center pb-2">
             <Link href="/" className="flex flex-col items-center mb-4">
               <Logo size={60} href="" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-3">
-                RoomFinder
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-3">RoomFinder</h2>
             </Link>
             <CardTitle className="text-2xl">Reset Password</CardTitle>
-            <CardDescription>
-              Enter your email and mobile to reset password
-            </CardDescription>
+            <CardDescription>Enter your email and mobile to reset password</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">

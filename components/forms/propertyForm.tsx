@@ -27,12 +27,8 @@ const PropertyForm = () => {
       {/* Basic Information */}
       <div className="space-y-4">
         <div className="border-b pb-2">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Basic Information
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">
-            Tell us about your property
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">Basic Information</h3>
+          <p className="text-sm text-gray-500 mt-1">Tell us about your property</p>
         </div>
         <Input
           name="title"
@@ -61,9 +57,7 @@ const PropertyForm = () => {
       {/* Property Details */}
       <div className="space-y-4">
         <div className="border-b pb-2">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Property Details
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900">Property Details</h3>
           <p className="text-sm text-gray-500 mt-1">Pricing and availability</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -135,9 +129,7 @@ const PropertyForm = () => {
       <div className="space-y-4">
         <div className="border-b pb-2">
           <h3 className="text-lg font-semibold text-gray-900">Location</h3>
-          <p className="text-sm text-gray-500 mt-1">
-            Where is your property located?
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Where is your property located?</p>
         </div>
         <Input
           name="address"
@@ -146,7 +138,7 @@ const PropertyForm = () => {
           required
           value={formData.location.address}
           onChange={handleChange}
-          error={errors['location.address']}
+          error={errors["location.address"]}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
@@ -156,7 +148,7 @@ const PropertyForm = () => {
             required
             value={formData.location.city}
             onChange={handleChange}
-            error={errors['location.city']}
+            error={errors["location.city"]}
           />
           <Input
             name="area"
@@ -165,7 +157,7 @@ const PropertyForm = () => {
             required
             value={formData.location.area}
             onChange={handleChange}
-            error={errors['location.area']}
+            error={errors["location.area"]}
           />
         </div>
       </div>
@@ -173,12 +165,8 @@ const PropertyForm = () => {
       {/* Specifications */}
       <div className="space-y-4">
         <div className="border-b pb-2">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Specifications
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">
-            Property size and features
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">Specifications</h3>
+          <p className="text-sm text-gray-500 mt-1">Property size and features</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Input
@@ -188,7 +176,7 @@ const PropertyForm = () => {
             placeholder="1000"
             value={formData.specifications.size || ""}
             onChange={handleChange}
-            error={errors['specifications.size']}
+            error={errors["specifications.size"]}
           />
           <Input
             name="rooms"
@@ -197,7 +185,7 @@ const PropertyForm = () => {
             placeholder="2"
             value={formData.specifications.rooms || ""}
             onChange={handleChange}
-            error={errors['specifications.rooms']}
+            error={errors["specifications.rooms"]}
           />
           <Input
             name="bathrooms"
@@ -206,7 +194,7 @@ const PropertyForm = () => {
             placeholder="1"
             value={formData.specifications.bathrooms || ""}
             onChange={handleChange}
-            error={errors['specifications.bathrooms']}
+            error={errors["specifications.bathrooms"]}
           />
         </div>
         <div className="flex items-center gap-2">
@@ -227,12 +215,8 @@ const PropertyForm = () => {
       {/* Amenities & Rules */}
       <div className="space-y-4">
         <div className="border-b pb-2">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Amenities & Rules
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">
-            What does your property offer?
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">Amenities & Rules</h3>
+          <p className="text-sm text-gray-500 mt-1">What does your property offer?</p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           <label className="flex items-center gap-2">
@@ -378,12 +362,8 @@ const PropertyForm = () => {
       {/* Contact Information */}
       <div className="space-y-4">
         <div className="border-b pb-2">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Contact Information
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">
-            How can tenants reach you?
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">Contact Information</h3>
+          <p className="text-sm text-gray-500 mt-1">How can tenants reach you?</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
@@ -392,7 +372,7 @@ const PropertyForm = () => {
             placeholder="Your name"
             required
             onChange={handleChange}
-            error={errors['contact.name']}
+            error={errors["contact.name"]}
           />
           <Input
             name="contactPhone"
@@ -401,7 +381,7 @@ const PropertyForm = () => {
             placeholder="98XXXXXXXX"
             required
             onChange={handleChange}
-            error={errors['contact.phone']}
+            error={errors["contact.phone"]}
           />
         </div>
       </div>
@@ -410,9 +390,7 @@ const PropertyForm = () => {
       <div className="space-y-4">
         <div className="border-b pb-2">
           <h3 className="text-lg font-semibold text-gray-900">Images</h3>
-          <p className="text-sm text-gray-500 mt-1">
-            Add photos of your property
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Add photos of your property</p>
         </div>
         <input
           type="file"
@@ -428,7 +406,13 @@ const PropertyForm = () => {
           <div className="grid grid-cols-3 gap-2">
             {imagePreviews.map((preview, index) => (
               <div key={index} className="relative">
-                <Image src={preview} alt="Property" className="object-cover rounded" width={200} height={120}/>
+                <Image
+                  src={preview}
+                  alt="Property"
+                  className="object-cover rounded"
+                  width={200}
+                  height={120}
+                />
                 <button
                   type="button"
                   onClick={() => removeImage(index)}
@@ -446,9 +430,7 @@ const PropertyForm = () => {
       <div className="space-y-4 pt-4">
         <label className="flex items-center gap-2">
           <input type="checkbox" required className="rounded" />
-          <span className="text-sm">
-            I confirm this information is accurate
-          </span>
+          <span className="text-sm">I confirm this information is accurate</span>
         </label>
         <div className="flex gap-4">
           <Button type="submit" disabled={pending} className="flex-1">

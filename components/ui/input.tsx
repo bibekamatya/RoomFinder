@@ -20,9 +20,7 @@ function Input({
 }: InputProps) {
   return (
     <div className="w-full">
-      {label && (
-        <Label label={label} className={labelClassName} required={required} />
-      )}
+      {label && <Label label={label} className={labelClassName} required={required} />}
       <input
         type={type}
         data-slot="input"
@@ -35,9 +33,7 @@ function Input({
         )}
         {...props}
       />
-      {error && (
-        <p className="text-red-600 dark:text-red-400 text-xs mt-1">{error}</p>
-      )}
+      {error && <p className="text-red-600 dark:text-red-400 text-xs mt-1">{error}</p>}
     </div>
   );
 }

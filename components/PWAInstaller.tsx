@@ -50,7 +50,9 @@ export default function PWAInstaller() {
           <Download className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Install RoomFinder</h3>
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+            Install RoomFinder
+          </h3>
           <p className="text-xs text-gray-600 dark:text-slate-400 mb-3">
             Install our app for a better experience
           </p>

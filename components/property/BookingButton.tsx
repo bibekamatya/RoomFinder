@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useSession } from 'next-auth/react';
-import { useRouter, usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { useSession } from "next-auth/react";
+import { useRouter, usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export function BookingButton({ roomId, ownerId }: { roomId: string; ownerId: string }) {
   const { data: session } = useSession();
@@ -16,7 +16,7 @@ export function BookingButton({ roomId, ownerId }: { roomId: string; ownerId: st
     }
 
     if (session.user.id === ownerId) {
-      alert('You cannot book your own property');
+      alert("You cannot book your own property");
       return;
     }
 
@@ -26,7 +26,7 @@ export function BookingButton({ roomId, ownerId }: { roomId: string; ownerId: st
 
   return (
     <Button onClick={handleClick} className="w-full">
-      {session ? 'Book Now' : 'Login to Book'}
+      {session ? "Book Now" : "Login to Book"}
     </Button>
   );
 }

@@ -40,9 +40,7 @@ const NavBar = () => {
       <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Logo size={50} href="" />
-          <span className="text-xl font-bold text-gray-900 dark:text-white">
-            RoomFinder
-          </span>
+          <span className="text-xl font-bold text-gray-900 dark:text-white">RoomFinder</span>
         </Link>
         <div className="flex items-center gap-6">
           {routes.map((route) => {

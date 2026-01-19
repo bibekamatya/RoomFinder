@@ -97,26 +97,20 @@ export const useAddPropertyHandler = () => {
     e.preventDefault();
     try {
       await propertySchema.validate(formData, { abortEarly: false });
-      
+
       // Validate images
       if (imageFiles.length < 1) {
-        setErrors({ images: 'At least 1 image is required' });
+        setErrors({ images: "At least 1 image is required" });
         return;
       }
-      
+
       setErrors({});
       startTransition(async () => {
         try {
-          const response = await createProperty(
-            formData,
-            imageFiles
-          );
+          const response = await createProperty(formData, imageFiles);
           router.push(`/properties/${response.id}`);
         } catch (error) {
-          const message =
-            error instanceof Error
-              ? error.message
-              : "Failed to create property";
+          const message = error instanceof Error ? error.message : "Failed to create property";
           setErrors({ submit: message });
         }
       });
@@ -137,28 +131,28 @@ export const useAddPropertyHandler = () => {
   const handleImageUpload = (files: FileList) => {
     const currentCount = imageFiles.length;
     const newCount = files.length;
-    
+
     if (currentCount + newCount > 3) {
-      setErrors({ images: 'Maximum 3 images allowed' });
+      setErrors({ images: "Maximum 3 images allowed" });
       return;
     }
-    
+
     const newFiles = Array.from(files);
-    setImageFiles(prev => [...prev, ...newFiles]);
-    
+    setImageFiles((prev) => [...prev, ...newFiles]);
+
     // Create previews
-    newFiles.forEach(file => {
+    newFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreviews(prev => [...prev, reader.result as string]);
+        setImagePreviews((prev) => [...prev, reader.result as string]);
       };
       reader.readAsDataURL(file);
     });
   };
 
   const removeImage = (index: number) => {
-    setImageFiles(prev => prev.filter((_, i) => i !== index));
-    setImagePreviews(prev => prev.filter((_, i) => i !== index));
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   return {

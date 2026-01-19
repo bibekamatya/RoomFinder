@@ -1,10 +1,10 @@
-'use server';
+"use server";
 
-import { uploadImage, deleteImage } from '../cloudinary';
+import { uploadImage, deleteImage } from "../cloudinary";
 
 export async function uploadPropertyImage(formData: FormData) {
-  const file = formData.get('file') as File;
-  if (!file) throw new Error('No file provided');
+  const file = formData.get("file") as File;
+  if (!file) throw new Error("No file provided");
 
   const url = await uploadImage(file);
   return { url };

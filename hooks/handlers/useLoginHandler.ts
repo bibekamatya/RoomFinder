@@ -27,24 +27,22 @@ export const useLoginHandler = () => {
       });
 
       if (result?.error) {
-        setError(result.error === "CredentialsSignin" 
-          ? "Invalid email or password" 
-          : result.error);
+        setError(result.error === "CredentialsSignin" ? "Invalid email or password" : result.error);
         setIsPending(false);
       } else if (result?.ok) {
         const session = await fetch("/api/auth/session").then((res) => res.json());
         const role = session?.user?.role;
 
         // Sync localStorage favorites to DB
-        const localFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        const localFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
         if (localFavorites.length > 0) {
           await syncLocalFavorites(localFavorites);
-          localStorage.removeItem('favorites');
+          localStorage.removeItem("favorites");
         }
 
         // Check for redirect parameter
         const urlParams = new URLSearchParams(window.location.search);
-        const redirect = urlParams.get('redirect');
+        const redirect = urlParams.get("redirect");
 
         if (redirect) {
           router.push(redirect);
@@ -55,7 +53,7 @@ export const useLoginHandler = () => {
         } else {
           router.push("/");
         }
-        
+
         router.refresh();
       }
     } catch (err) {

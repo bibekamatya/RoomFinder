@@ -7,7 +7,7 @@ const EMPTY_PROPERTY: PropertyFormData = {
   roomType: "single",
   price: 0,
   securityDeposit: 0,
-  availableFrom: new Date().toISOString().split('T')[0],
+  availableFrom: new Date().toISOString().split("T")[0],
   minimumStay: "",
   location: {
     address: "",
@@ -30,17 +30,19 @@ const EMPTY_PROPERTY: PropertyFormData = {
     name: "",
     phone: "",
   },
-  availability:"available",
+  availability: "available",
+  images: [],
 };
 
 const DEV_PROPERTY: PropertyFormData = {
   title: "Spacious 2BHK Apartment in Thamel",
-  description: "Beautiful apartment with modern amenities, close to restaurants and shops. Perfect for students and working professionals.",
+  description:
+    "Beautiful apartment with modern amenities, close to restaurants and shops. Perfect for students and working professionals.",
   propertyType: "flat",
   roomType: "single",
   price: 15000,
   securityDeposit: 30000,
-  availableFrom: new Date().toISOString().split('T')[0],
+  availableFrom: new Date().toISOString().split("T")[0],
   minimumStay: "3 Months",
   location: {
     address: "Thamel Marg, Ward 26",
@@ -64,7 +66,7 @@ const DEV_PROPERTY: PropertyFormData = {
     phone: "9841234567",
   },
   images: [],
-  availability:"available"
+  availability: "available"
 };
 
 export const ADD_PROPERTY = process.env.NODE_ENV === "development" ? DEV_PROPERTY : EMPTY_PROPERTY;

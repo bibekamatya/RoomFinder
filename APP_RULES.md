@@ -1,7 +1,9 @@
 # ROOM FINDER APP - RULES & SPECIFICATIONS
 
 ## 🎯 PRIMARY OBJECTIVE
+
 Build a **mid-level frontend showcase** that demonstrates:
+
 - State management mastery
 - Performance optimization
 - Clean architecture
@@ -10,6 +12,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 ## 🚫 CRITICAL CONSTRAINTS
 
 ### NEVER INCLUDE:
+
 - ❌ Real payment processing (mock only)
 - ❌ Real authentication backend (mock with localStorage/cookies)
 - ❌ Real-time chat (simple messaging UI only)
@@ -17,6 +20,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 - ❌ Features that don't demonstrate frontend skills
 
 ### ALWAYS PRIORITIZE:
+
 - ✅ Component reusability
 - ✅ Performance optimizations (lazy loading, memoization)
 - ✅ Proper error handling & loading states
@@ -28,6 +32,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 ## 👥 USER ROLES (MANDATORY)
 
 ### 1. Guest/Tenant (Public)
+
 - Browse listings
 - Search & filter
 - View details
@@ -35,12 +40,14 @@ Build a **mid-level frontend showcase** that demonstrates:
 - Send inquiries (mocked)
 
 ### 2. Owner (Protected)
+
 - Full CRUD on own listings
 - View inquiries
 - Manage availability
 - Dashboard with stats
 
 ### 3. Admin (Protected)
+
 - View all listings
 - User management (view only)
 - Platform overview
@@ -53,6 +60,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 ### Phase 1: Foundation (Week 1-2)
 
 #### Authentication (Mocked)
+
 ```typescript
 // Mock roles: 'guest' | 'owner' | 'admin'
 // Store in localStorage/cookies
@@ -65,6 +73,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 - Logout functionality
 
 #### Listing Display
+
 - Grid/List view toggle
 - Pagination (10 items/page)
 - Loading skeletons
@@ -72,6 +81,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 - Image carousel
 
 #### Room Details Page
+
 - Image gallery
 - Price, location, amenities
 - Owner info (mocked)
@@ -82,6 +92,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 ### Phase 2: Search & Filter (Week 3-4)
 
 #### Search System
+
 ```typescript
 // Debounced search (300ms)
 // Query params for shareable URLs
@@ -96,6 +107,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 - Sort options (price, date, relevance)
 
 #### Favorites System
+
 - Add/remove favorites
 - Persist in localStorage
 - Favorites page
@@ -104,6 +116,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 ### Phase 3: Owner Dashboard (Week 5-6)
 
 #### Listing Management (CRUD)
+
 ```typescript
 // Form validation with Zod
 // Optimistic UI updates
@@ -111,6 +124,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 ```
 
 **Create Listing Form:**
+
 - Title, description
 - Price (monthly/daily)
 - Property type dropdown
@@ -121,11 +135,13 @@ Build a **mid-level frontend showcase** that demonstrates:
 - Draft saving
 
 **Edit/Delete:**
+
 - Inline editing
 - Confirmation modals
 - Optimistic updates
 
 **Dashboard:**
+
 - My listings table
 - Quick stats (total, active, inquiries)
 - Action buttons (edit/delete/toggle)
@@ -133,12 +149,14 @@ Build a **mid-level frontend showcase** that demonstrates:
 ### Phase 4: Inquiry System (Week 7)
 
 #### Tenant Side
+
 - Inquiry form (name, email, message, move-in date)
 - Zod validation
 - Success toast
 - Error handling
 
 #### Owner Side
+
 - Inquiry list
 - Status badges (pending/approved/rejected)
 - Update status
@@ -147,6 +165,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 ### Phase 5: Admin Dashboard (Week 8)
 
 #### Platform Overview
+
 ```typescript
 // Use useMemo for computed values
 ```
@@ -157,6 +176,7 @@ Build a **mid-level frontend showcase** that demonstrates:
 - User statistics
 
 #### User Management
+
 - Owner list table
 - Role indicators
 - Status badges
@@ -166,22 +186,26 @@ Build a **mid-level frontend showcase** that demonstrates:
 ## 🎨 UI/UX REQUIREMENTS
 
 ### Layouts
+
 1. **Public Layout:** Header + Footer
 2. **Dashboard Layout:** Sidebar + Header
 3. **Responsive:** Mobile (< 768px), Tablet, Desktop
 
 ### Theme System
+
 - Light/Dark mode toggle
 - Persist preference (localStorage)
 - CSS variables for colors
 
 ### Feedback States
+
 - Loading: Skeleton loaders
 - Success: Toast notifications
 - Error: Toast + inline messages
 - Empty: Friendly empty states
 
 ### Components Library
+
 ```
 /components
   /ui (shadcn/ui style)
@@ -205,15 +229,17 @@ Build a **mid-level frontend showcase** that demonstrates:
 ## ⚡ PERFORMANCE RULES
 
 ### Code Splitting
+
 ```typescript
 // Lazy load routes
-const OwnerDashboard = lazy(() => import('@/features/owner/Dashboard'))
+const OwnerDashboard = lazy(() => import("@/features/owner/Dashboard"));
 
 // Lazy load heavy components
-const MapView = lazy(() => import('@/components/MapView'))
+const MapView = lazy(() => import("@/components/MapView"));
 ```
 
 ### Memoization
+
 ```typescript
 // Use useMemo for:
 - Filtered/sorted lists
@@ -227,12 +253,14 @@ const MapView = lazy(() => import('@/components/MapView'))
 ```
 
 ### Image Optimization
+
 - Next.js Image component
 - Lazy loading
 - Blur placeholders
 - Responsive sizes
 
 ### Data Fetching
+
 ```typescript
 // TanStack Query
 - Caching strategy
@@ -277,18 +305,21 @@ const MapView = lazy(() => import('@/components/MapView'))
 ## 🔧 TECH STACK (LOCKED)
 
 ### Core
+
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 - **UI Components:** shadcn/ui
 
 ### State & Data
+
 - **Server State:** TanStack Query
 - **Client State:** React Context + hooks
 - **Forms:** React Hook Form
 - **Validation:** Zod
 
 ### Optional (If Time Allows)
+
 - **Maps:** Leaflet (lighter than Google Maps)
 - **Charts:** Recharts (for admin dashboard)
 
@@ -297,56 +328,59 @@ const MapView = lazy(() => import('@/components/MapView'))
 ## 📊 DATA MODELS
 
 ### Room Listing
+
 ```typescript
 interface Room {
-  id: string
-  title: string
-  description: string
-  price: number
-  priceType: 'monthly' | 'daily'
-  propertyType: 'apartment' | 'room' | 'house'
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  priceType: "monthly" | "daily";
+  propertyType: "apartment" | "room" | "house";
   location: {
-    address: string
-    city: string
-    area: string
-  }
-  amenities: string[]
-  images: string[]
+    address: string;
+    city: string;
+    area: string;
+  };
+  amenities: string[];
+  images: string[];
   specifications: {
-    size?: number
-    rooms?: number
-    bathrooms?: number
-    furnished: boolean
-  }
-  availability: 'available' | 'rented' | 'pending'
-  ownerId: string
-  createdAt: string
-  updatedAt: string
+    size?: number;
+    rooms?: number;
+    bathrooms?: number;
+    furnished: boolean;
+  };
+  availability: "available" | "rented" | "pending";
+  ownerId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 ```
 
 ### Inquiry
+
 ```typescript
 interface Inquiry {
-  id: string
-  roomId: string
-  tenantName: string
-  tenantEmail: string
-  message: string
-  moveInDate: string
-  status: 'pending' | 'approved' | 'rejected'
-  createdAt: string
+  id: string;
+  roomId: string;
+  tenantName: string;
+  tenantEmail: string;
+  message: string;
+  moveInDate: string;
+  status: "pending" | "approved" | "rejected";
+  createdAt: string;
 }
 ```
 
 ### User (Mocked)
+
 ```typescript
 interface User {
-  id: string
-  name: string
-  email: string
-  role: 'guest' | 'owner' | 'admin'
-  avatar?: string
+  id: string;
+  name: string;
+  email: string;
+  role: "guest" | "owner" | "admin";
+  avatar?: string;
 }
 ```
 
@@ -355,6 +389,7 @@ interface User {
 ## 🎯 DEMONSTRATION CHECKLIST
 
 ### Must Demonstrate:
+
 - [ ] Role-based routing
 - [ ] Protected routes
 - [ ] Form validation (Zod)
@@ -380,6 +415,7 @@ interface User {
 ## 🚀 IMPLEMENTATION PHASES
 
 ### Week 1-2: Foundation
+
 - [ ] Project setup (Next.js + TypeScript + Tailwind)
 - [ ] UI components library
 - [ ] Mock auth system
@@ -388,6 +424,7 @@ interface User {
 - [ ] Room details page
 
 ### Week 3-4: Search & Discovery
+
 - [ ] Search bar with debounce
 - [ ] Filter panel
 - [ ] Sort functionality
@@ -395,6 +432,7 @@ interface User {
 - [ ] Pagination
 
 ### Week 5-6: Owner Features
+
 - [ ] Owner dashboard layout
 - [ ] Create listing form
 - [ ] Edit/delete listings
@@ -402,12 +440,14 @@ interface User {
 - [ ] Image upload (mock)
 
 ### Week 7: Inquiry System
+
 - [ ] Inquiry form
 - [ ] Inquiry list for owners
 - [ ] Status management
 - [ ] Notifications
 
 ### Week 8: Admin & Polish
+
 - [ ] Admin dashboard
 - [ ] Platform statistics
 - [ ] User management view
@@ -415,6 +455,7 @@ interface User {
 - [ ] Error handling polish
 
 ### Week 9-10: Deployment
+
 - [ ] Deploy to Vercel
 - [ ] Environment variables
 - [ ] README documentation
@@ -426,24 +467,21 @@ interface User {
 ## 🎨 DESIGN PRINCIPLES
 
 ### Color Palette
+
 ```css
 /* Light Mode */
---primary: #3B82F6      /* Blue */
---secondary: #10B981    /* Green */
---accent: #F59E0B       /* Amber */
---danger: #EF4444       /* Red */
-
-/* Dark Mode */
---primary-dark: #60A5FA
---secondary-dark: #34D399
+--primary: #3b82f6 /* Blue */ --secondary: #10b981 /* Green */ --accent: #f59e0b /* Amber */
+  --danger: #ef4444 /* Red */ /* Dark Mode */ --primary-dark: #60a5fa --secondary-dark: #34d399;
 ```
 
 ### Typography
+
 - **Headings:** Inter/Geist Sans (bold)
 - **Body:** Inter/Geist Sans (regular)
 - **Code:** Geist Mono
 
 ### Spacing
+
 - Use Tailwind's spacing scale (4px base)
 - Consistent padding/margin
 
@@ -452,6 +490,7 @@ interface User {
 ## 🔐 MOCK DATA STRATEGY
 
 ### Mock API Routes
+
 ```typescript
 // /api/rooms - GET, POST
 // /api/rooms/[id] - GET, PUT, DELETE
@@ -462,6 +501,7 @@ interface User {
 ```
 
 ### Sample Data
+
 - 20-30 room listings
 - 3 mock users (guest, owner, admin)
 - 10-15 inquiries
@@ -472,23 +512,27 @@ interface User {
 ## 📝 CODE QUALITY RULES
 
 ### TypeScript
+
 - No `any` types
 - Strict mode enabled
 - Interface over type (for objects)
 - Proper generics usage
 
 ### Components
+
 - Max 200 lines per component
 - Single responsibility
 - Props interface defined
 - Default exports for pages, named for components
 
 ### Hooks
+
 - Custom hooks start with `use`
 - Extract reusable logic
 - Proper dependency arrays
 
 ### Naming
+
 - PascalCase: Components, Types
 - camelCase: Functions, variables
 - UPPER_CASE: Constants
@@ -499,6 +543,7 @@ interface User {
 ## 🎯 PORTFOLIO PRESENTATION
 
 ### README Must Include:
+
 1. **Hero screenshot**
 2. **Tech stack badges**
 3. **Key features list**
@@ -509,6 +554,7 @@ interface User {
 8. **Lessons learned**
 
 ### Demo Video (3-5 min):
+
 1. Quick overview
 2. Search & filter demo
 3. Create listing flow
@@ -522,6 +568,7 @@ interface User {
 ## ⚠️ SCOPE CREEP PREVENTION
 
 ### If You're Tempted to Add:
+
 - Real payments → **NO** (mock only)
 - Real chat → **NO** (simple messaging UI)
 - Email notifications → **NO** (toast only)
@@ -530,6 +577,7 @@ interface User {
 - Social login → **NO** (email/password mock)
 
 ### Ask Yourself:
+
 > "Does this feature demonstrate frontend skills better than what I already have?"
 
 If NO → Skip it.
@@ -539,6 +587,7 @@ If NO → Skip it.
 ## 🏁 DEFINITION OF DONE
 
 ### A Feature is Complete When:
+
 - [ ] Works on mobile & desktop
 - [ ] Has loading state
 - [ ] Has error state
@@ -555,6 +604,7 @@ If NO → Skip it.
 ## 🎓 LEARNING GOALS
 
 This project should teach you:
+
 1. **Architecture:** Feature-based structure
 2. **State:** Server vs Client state
 3. **Performance:** Memoization, lazy loading
@@ -583,6 +633,7 @@ When presenting this project:
 ## 🎯 SUCCESS METRICS
 
 ### This Project is Successful If:
+
 - ✅ Loads in < 2 seconds
 - ✅ Works perfectly on mobile
 - ✅ No TypeScript errors
@@ -597,6 +648,7 @@ When presenting this project:
 ## 🔄 ITERATION RULES
 
 ### After MVP:
+
 1. Get feedback from 3 developers
 2. Fix critical bugs only
 3. Add ONE impressive feature
@@ -605,6 +657,7 @@ When presenting this project:
 6. Write documentation
 
 ### Don't:
+
 - Keep adding features endlessly
 - Rewrite working code
 - Over-optimize prematurely

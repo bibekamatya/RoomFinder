@@ -32,10 +32,7 @@ export default function UserDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="rounded-full p-0 h-8 w-8 overflow-hidden"
-        >
+        <Button variant="outline" className="rounded-full p-0 h-8 w-8 overflow-hidden">
           {userImage ? (
             <img
               src={userImage}
@@ -67,23 +64,22 @@ export default function UserDropdown() {
             </div>
             <div className="flex flex-col">
               <p className="text-sm font-semibold">{user?.name}</p>
-              <p className="text-xs text-muted-foreground truncate">
-                {user?.email}
-              </p>
+              <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
               {process.env.NODE_ENV === "development" && (
-                <p className="text-xs font-medium text-blue-600 mt-1">
-                  Role: {user?.role}
-                </p>
+                <p className="text-xs font-medium text-blue-600 mt-1">Role: {user?.role}</p>
               )}
             </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        
+
         {isOwnerOrAdmin ? (
           // Owner/Admin - Show Dashboard
           <DropdownMenuItem asChild className="py-2.5">
-            <Link href={user?.role === "admin" ? "/dashboard/admin" : "/dashboard"} className="cursor-pointer">
+            <Link
+              href={user?.role === "admin" ? "/dashboard/admin" : "/dashboard"}
+              className="cursor-pointer"
+            >
               <LayoutDashboard className="mr-3 h-4 w-4" />
               Dashboard
             </Link>
@@ -111,7 +107,7 @@ export default function UserDropdown() {
             </DropdownMenuItem>
           </>
         )}
-        
+
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => setShowLogoutDialog(true)}

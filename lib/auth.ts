@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         await connectDB();
-        
+
         const email = credentials.email as string;
         const password = credentials.password as string;
 
@@ -22,7 +22,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!user) {
           throw new Error("No user found with this email");
         }
-        
+
         if (!user.password) {
           throw new Error("Please set up a password first");
         }

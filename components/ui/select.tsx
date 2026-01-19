@@ -27,9 +27,7 @@ function Select({
 
   return (
     <div className="w-full">
-      {label && (
-        <Label className={labelClassName} label={label} required={required} />
-      )}
+      {label && <Label className={labelClassName} label={label} required={required} />}
       <select
         aria-invalid={!!error}
         className={cn(

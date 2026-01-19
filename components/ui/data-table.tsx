@@ -1,6 +1,13 @@
 "use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface Column<T> {
   key: keyof T | string;
@@ -14,7 +21,11 @@ interface DataTableProps<T> {
   onRowClick?: (row: T) => void;
 }
 
-export function DataTable<T extends Record<string, any>>({ data, columns, onRowClick }: DataTableProps<T>) {
+export function DataTable<T extends Record<string, any>>({
+  data,
+  columns,
+  onRowClick,
+}: DataTableProps<T>) {
   return (
     <div className="rounded-md border">
       <Table>

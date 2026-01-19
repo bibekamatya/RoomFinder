@@ -29,7 +29,11 @@ export async function middleware(request: NextRequest) {
     }
 
     // Dashboard is for owners/admins only
-    if (!pathname.startsWith("/dashboard/admin") && token.role !== "owner" && token.role !== "admin") {
+    if (
+      !pathname.startsWith("/dashboard/admin") &&
+      token.role !== "owner" &&
+      token.role !== "admin"
+    ) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { deleteImage } from '@/lib/cloudinary';
+import { NextRequest, NextResponse } from "next/server";
+import { deleteImage } from "@/lib/cloudinary";
 
 export async function POST(req: NextRequest) {
   try {
@@ -7,6 +7,6 @@ export async function POST(req: NextRequest) {
     await deleteImage(url);
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to delete image' }, { status: 500 });
+    return NextResponse.json({ error: "Failed to delete image" }, { status: 500 });
   }
 }

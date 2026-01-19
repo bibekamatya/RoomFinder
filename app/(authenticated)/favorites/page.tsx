@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { getFavorites, getPropertyById } from '@/lib/actions';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { getFavorites, getPropertyById } from "@/lib/actions";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function FavoritesPage() {
   const { data: session } = useSession();
@@ -19,11 +19,9 @@ export default function FavoritesPage() {
         setFavorites(rooms);
       } else {
         // Guest - load from localStorage
-        const localIds = JSON.parse(localStorage.getItem('favorites') || '[]');
+        const localIds = JSON.parse(localStorage.getItem("favorites") || "[]");
         if (localIds.length > 0) {
-          const rooms = await Promise.all(
-            localIds.map((id: string) => getPropertyById(id))
-          );
+          const rooms = await Promise.all(localIds.map((id: string) => getPropertyById(id)));
           setFavorites(rooms.filter(Boolean));
         }
       }
@@ -39,9 +37,9 @@ export default function FavoritesPage() {
       <div className="text-center py-12">
         <h1 className="text-2xl font-bold mb-4">No Favorites Yet</h1>
         <p className="text-gray-600 mb-6">
-          {session 
-            ? 'Start browsing rooms and save your favorites!' 
-            : 'Your temporary favorites will appear here. Login to save them permanently.'}
+          {session
+            ? "Start browsing rooms and save your favorites!"
+            : "Your temporary favorites will appear here. Login to save them permanently."}
         </p>
         <Link href="/property">
           <Button>Browse Properties</Button>
@@ -54,11 +52,7 @@ export default function FavoritesPage() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">My Favorites</h1>
-        {!session && (
-          <p className="text-sm text-orange-600">
-            Login to save favorites permanently
-          </p>
-        )}
+        {!session && <p className="text-sm text-orange-600">Login to save favorites permanently</p>}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {favorites.map((room) => (
@@ -66,7 +60,9 @@ export default function FavoritesPage() {
             <div className="border rounded-lg p-4 hover:shadow-lg transition-shadow bg-white">
               <h3 className="font-semibold text-lg mb-2">{room.title}</h3>
               <p className="text-gray-600 text-sm mb-2">{room.location?.city}</p>
-              <p className="text-lg font-bold">₹{room.price}/{room.priceType}</p>
+              <p className="text-lg font-bold">
+                ₹{room.price}/{room.priceType}
+              </p>
             </div>
           </Link>
         ))}

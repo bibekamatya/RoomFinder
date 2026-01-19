@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {
-  throw new Error('Please define MONGODB_URI in .env file');
+  throw new Error("Please define MONGODB_URI in .env file");
 }
 
 const cached = (global as any).mongoose || { conn: null, promise: null };
