@@ -3,13 +3,11 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
-  const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+  const { pathname } = request.nextUrl;
   const token = await getToken({
     req: request,
-    secret,
+    secret: process.env.JWT_SECRET || process.env.AUTH_SECRET,
   });
-
-  const { pathname } = request.nextUrl;
 
   // Redirect logged-in users away from auth pages
   if (token && (pathname === "/login" || pathname === "/signup")) {
