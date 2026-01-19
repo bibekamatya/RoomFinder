@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = await getToken({
     req: request,
-    secret: process.env.JWT_SECRET || process.env.AUTH_SECRET,
+    secret: process.env.AUTH_SECRET,
   });
 
   // Redirect logged-in users away from auth pages
