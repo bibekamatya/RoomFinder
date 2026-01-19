@@ -10,6 +10,17 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
+  // Redirect logged-in users away from auth pages
+  if (token && (pathname === "/login" || pathname === "/signup")) {
+    const role = token.role as string;
+    if (role === "admin") {
+      return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+    } else if (role === "owner") {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
   // Protect authenticated routes (except favorites which allows guests)
   if (pathname.startsWith("/my-bookings") || pathname.startsWith("/profile")) {
     if (!token) {
@@ -42,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/favorites", "/my-bookings", "/profile"],
+  matcher: ["/dashboard/:path*", "/favorites", "/my-bookings", "/profile", "/login", "/signup"],
 };

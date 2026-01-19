@@ -50,7 +50,7 @@ export default async function RootLayout({
       </head>
       <body className={`${poppins.variable} font-sans antialiased`}>
         <AuthProvider session={session}>
-          <Toaster position="top-center" />
+          <Toaster position="bottom-right" />
           {children}
           <PWAInstaller />
         </AuthProvider>

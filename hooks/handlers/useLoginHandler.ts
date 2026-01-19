@@ -37,8 +37,6 @@ export const useLoginHandler = () => {
         const role = session?.user?.role;
         const userName = session?.user?.name || "User";
 
-        toast.success(`Welcome back, ${userName}!`);
-
         // Sync localStorage favorites to DB
         const localFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
         if (localFavorites.length > 0) {
@@ -46,18 +44,20 @@ export const useLoginHandler = () => {
           localStorage.removeItem("favorites");
         }
 
+        toast.success(`Welcome back, ${userName}!`);
+
         // Check for redirect parameter
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get("redirect");
 
         if (redirect) {
-          router.push(redirect);
+          window.location.href = redirect;
         } else if (role === "admin") {
-          router.push("/dashboard/admin");
+          window.location.href = "/dashboard/admin";
         } else if (role === "owner") {
-          router.push("/dashboard");
+          window.location.href = "/dashboard";
         } else {
-          router.push("/");
+          window.location.href = "/";
         }
       }
     } catch (err) {
