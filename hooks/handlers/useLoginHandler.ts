@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { syncLocalFavorites } from "@/lib/actions";
+import toast from "react-hot-toast";
 
 export const useLoginHandler = () => {
   const INITIAL_STATE = {
@@ -32,8 +33,11 @@ export const useLoginHandler = () => {
       }
 
       if (result?.ok) {
-        const session = await fetch("/api/auth/session").then((res) => res.json());
+        const session = await getSession();
         const role = session?.user?.role;
+        const userName = session?.user?.name || "User";
+
+        toast.success(`Welcome back, ${userName}!`);
 
         // Sync localStorage favorites to DB
         const localFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
@@ -55,8 +59,6 @@ export const useLoginHandler = () => {
         } else {
           router.push("/");
         }
-
-        router.refresh();
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
