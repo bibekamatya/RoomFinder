@@ -28,8 +28,10 @@ export const useLoginHandler = () => {
 
       if (result?.error) {
         setError(result.error === "CredentialsSignin" ? "Invalid email or password" : result.error);
-        setIsPending(false);
-      } else if (result?.ok) {
+        return;
+      }
+
+      if (result?.ok) {
         const session = await fetch("/api/auth/session").then((res) => res.json());
         const role = session?.user?.role;
 
@@ -58,6 +60,7 @@ export const useLoginHandler = () => {
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
+    } finally {
       setIsPending(false);
     }
   };
