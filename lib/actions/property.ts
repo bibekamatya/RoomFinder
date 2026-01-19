@@ -4,7 +4,7 @@ import { connectDB } from "../db/mongodb";
 import { Property, User, Inquiry } from "../db/models";
 import { Property as PropertyType, PropertyFormData } from "../types/data";
 import { auth } from "../auth";
-import { uploadImage, deleteImages } from "../cloudinary";
+import { uploadImage } from "../cloudinary";
 
 export async function getProperties(filters?: {
   city?: string;
@@ -55,7 +55,7 @@ export async function getPropertyById(id: string) {
         owner: owner ? { name: owner.name, email: owner.email } : null,
       })
     );
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -82,7 +82,7 @@ export async function incrementPropertyViews(id: string) {
         });
       }
     }
-  } catch (error) {
+  } catch {
     // Silently fail - view tracking is not critical
   }
 }
@@ -151,10 +151,7 @@ export async function getAllProperties() {
   );
 }
 
-export async function createProperty(
-  data: PropertyFormData,
-  imageFiles: File[]
-) {
+export async function createProperty(data: PropertyFormData, imageFiles: File[]) {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
 
