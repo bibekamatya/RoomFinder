@@ -20,7 +20,7 @@ export default function InquiriesPage() {
     let isMounted = true;
     getReceivedInquiries().then((result) => {
       if (isMounted) {
-        setInquiries(result);
+        setInquiries(result as Inquiry[]);
         setLoading(false);
       }
     });
@@ -34,7 +34,7 @@ export default function InquiriesPage() {
       await updateInquiryStatus(id, status);
       setInquiries((prev) => prev.map((inq) => (inq.id === id ? { ...inq, status } : inq)));
       toast.success(`Inquiry ${status}`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to update inquiry");
     }
   };
@@ -109,7 +109,7 @@ export default function InquiriesPage() {
           <StatCard
             key={stat.filter}
             {...stat}
-            onClick={() => setFilter(stat.filter as any)}
+            onClick={() => setFilter(stat.filter as "all" | "pending" | "approved" | "rejected")}
             isActive={filter === stat.filter}
           />
         ))}

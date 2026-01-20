@@ -3,6 +3,7 @@
 import { connectDB } from "../db/mongodb";
 import { Inquiry, Property } from "../db/models";
 import { auth } from "../auth";
+import { toPlainObject } from "../utils";
 
 export async function getInquiries() {
   const session = await auth();
@@ -42,20 +43,16 @@ export async function getReceivedInquiries() {
 
   await connectDB();
 
-  // Admin sees all inquiries
   if (session.user.role === "admin") {
     const inquiries = await Inquiry.find({}).lean();
-    return inquiries.map((inq) => ({ ...inq, id: inq._id.toString() }));
+    return inquiries.map((inq) => toPlainObject({ ...inq, id: inq._id.toString() }));
   }
 
-  // Owner sees only their property inquiries
   const properties = await Property.find({ ownerId: session.user.id }).lean();
   const propertyIds = properties.map((r) => r._id.toString());
 
-  const inquiries = await Inquiry.find({
-    propertyId: { $in: propertyIds },
-  }).lean();
-  return inquiries.map((inq) => ({ ...inq, id: inq._id.toString() }));
+  const inquiries = await Inquiry.find({ propertyId: { $in: propertyIds } }).lean();
+  return inquiries.map((inq) => toPlainObject({ ...inq, id: inq._id.toString() }));
 }
 
 export async function createInquiry(data: {

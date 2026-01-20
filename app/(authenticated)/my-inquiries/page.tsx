@@ -9,6 +9,7 @@ import { formatDate } from "@/lib/utils";
 
 export default async function MyInquiriesPage() {
   const inquiries = await getMyInquiries();
+  const plainInquiries = JSON.parse(JSON.stringify(inquiries));
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -20,7 +21,7 @@ export default async function MyInquiriesPage() {
           </p>
         </div>
 
-        {inquiries.length === 0 ? (
+        {plainInquiries.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="h-16 w-16 rounded-xl bg-gray-200 dark:bg-gray-800 flex items-center justify-center mb-4">
               <MessageSquare className="h-8 w-8 text-gray-400" />
@@ -40,7 +41,7 @@ export default async function MyInquiriesPage() {
           </div>
         ) : (
           <div className="grid gap-4">
-            {inquiries.map((inquiry: Inquiry) => (
+            {plainInquiries.map((inquiry: Inquiry) => (
               <Card
                 key={inquiry.id}
                 className="group hover:border-gray-400 dark:hover:border-gray-600 transition-all border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900"

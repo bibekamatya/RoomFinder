@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RoomFinder - Find Your Perfect Room in Nepal
+
+A modern room finder application built with Next.js 15, MongoDB, and NextAuth. Browse, list, and manage room rentals across Nepal.
+
+## Features
+
+- 🏠 Property listing and browsing
+- 🔍 Advanced search functionality
+- ❤️ Save favorite properties
+- 💬 Inquiry system for property owners
+- 📊 Dashboard for property management
+- 🔔 Real-time notifications
+- 👥 User authentication (Email & Google)
+- 🎨 Modern UI with dark mode support
+- 📱 Progressive Web App (PWA) support
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Database:** MongoDB with Mongoose
+- **Authentication:** NextAuth.js
+- **Styling:** Tailwind CSS v4
+- **UI Components:** Radix UI
+- **Image Upload:** Cloudinary
+- **Notifications:** React Hot Toast
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- MongoDB database
+- Cloudinary account (for image uploads)
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd roomfinder
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create `.env.local` file:
+
+```env
+# Database
+MONGODB_URI=your_mongodb_connection_string
+
+# NextAuth
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_secret_key
+
+# Google OAuth (optional)
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+4. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/roomfinder)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push your code to GitHub
+2. Import project to Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy!
+
+### Environment Variables for Vercel
+
+Add these in your Vercel project settings:
+
+- `MONGODB_URI`
+- `NEXTAUTH_URL` (your Vercel domain)
+- `NEXTAUTH_SECRET`
+- `GOOGLE_CLIENT_ID` (optional)
+- `GOOGLE_CLIENT_SECRET` (optional)
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+
+## Project Structure
+
+```
+roomfinder/
+├── app/                    # Next.js app directory
+│   ├── (auth)/            # Auth pages (login, signup)
+│   ├── (authenticated)/   # Protected pages (profile, favorites)
+│   ├── (marketing)/       # Public pages (home, properties)
+│   └── dashboard/         # Dashboard pages
+├── components/            # React components
+├── lib/                   # Utilities and configurations
+│   ├── actions/          # Server actions
+│   ├── db/               # Database models
+│   └── types/            # TypeScript types
+└── public/               # Static assets
+```
+
+## User Roles
+
+- **User:** Browse properties, save favorites, send inquiries
+- **Owner:** List properties, manage inquiries, view analytics
+- **Admin:** Full access to all properties, users, and inquiries
+
+## Contributing
+
+Contributions are welcome! Please check [TODO.md](TODO.md) for pending features.
+
+## License
+
+MIT

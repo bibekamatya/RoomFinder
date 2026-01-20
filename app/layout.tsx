@@ -16,11 +16,45 @@ export const metadata: Metadata = {
   title: "RoomFinder - Find Your Perfect Room in Nepal",
   description:
     "Discover comfortable, affordable rooms across Nepal. Connect with verified owners instantly.",
+  keywords: [
+    "room finder",
+    "room rental",
+    "Nepal",
+    "accommodation",
+    "rent room",
+    "property rental",
+  ],
+  authors: [{ name: "RoomFinder" }],
+  creator: "RoomFinder",
+  publisher: "RoomFinder",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "RoomFinder",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://roomfinder.vercel.app",
+    title: "RoomFinder - Find Your Perfect Room in Nepal",
+    description:
+      "Discover comfortable, affordable rooms across Nepal. Connect with verified owners instantly.",
+    siteName: "RoomFinder",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RoomFinder - Find Your Perfect Room in Nepal",
+    description:
+      "Discover comfortable, affordable rooms across Nepal. Connect with verified owners instantly.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 };
 
@@ -28,7 +62,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#9333ea",
+  themeColor: "#2563eb",
 };
 
 export default async function RootLayout({

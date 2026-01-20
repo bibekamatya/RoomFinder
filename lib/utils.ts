@@ -12,3 +12,8 @@ export function formatDate(date: Date | string): string {
   const year = d.getFullYear();
   return `${day}-${month}-${year}`;
 }
+
+// Helper to convert Mongoose documents to plain objects
+export function toPlainObject<T>(doc: unknown): T {
+  return JSON.parse(JSON.stringify(doc));
+}

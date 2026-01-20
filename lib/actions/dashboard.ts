@@ -3,6 +3,7 @@
 import { connectDB } from "../db/mongodb";
 import { Property, Inquiry } from "../db/models";
 import { auth } from "../auth";
+import { toPlainObject } from "../utils";
 
 export async function getDashboardStats() {
   const session = await auth();
@@ -14,13 +15,15 @@ export async function getDashboardStats() {
   if (session.user.role === "admin") {
     const properties = await Property.find({}).lean();
     const inquiries = await Inquiry.find({}).lean();
-    const totalViews = properties.reduce((sum, p: any) => sum + (p.views || 0), 0);
+    const totalViews = properties.reduce((sum, p: { views?: number }) => sum + (p.views || 0), 0);
 
     return {
       totalProperties: properties.length,
       totalViews,
       totalInquiries: inquiries.length,
-      availableProperties: properties.filter((p: any) => p.availability === "available").length,
+      availableProperties: properties.filter(
+        (p: { availability?: string }) => p.availability === "available"
+      ).length,
     };
   }
 
@@ -32,13 +35,15 @@ export async function getDashboardStats() {
     propertyId: { $in: propertyIds },
   }).lean();
 
-  const totalViews = properties.reduce((sum, p: any) => sum + (p.views || 0), 0);
+  const totalViews = properties.reduce((sum, p: { views?: number }) => sum + (p.views || 0), 0);
 
   return {
     totalProperties: properties.length,
     totalViews,
     totalInquiries: inquiries.length,
-    availableProperties: properties.filter((p: any) => p.availability === "available").length,
+    availableProperties: properties.filter(
+      (p: { availability?: string }) => p.availability === "available"
+    ).length,
   };
 }
 
@@ -48,31 +53,30 @@ export async function getRecentInquiries(limit = 3) {
 
   await connectDB();
 
-  // Admin sees all recent inquiries
   if (session.user.role === "admin") {
     const inquiries = await Inquiry.find({}).sort({ createdAt: -1 }).limit(limit).lean();
-
-    return inquiries.map((inq) => ({
-      ...inq,
-      id: inq._id.toString(),
-      createdAt: inq.createdAt?.toISOString(),
-    }));
+    return inquiries.map((inq) =>
+      toPlainObject({
+        ...inq,
+        id: inq._id.toString(),
+        createdAt: inq.createdAt?.toISOString(),
+      })
+    );
   }
 
-  // Owner sees only their property inquiries
   const properties = await Property.find({ ownerId: session.user.id }).lean();
   const propertyIds = properties.map((p) => p._id.toString());
 
-  const inquiries = await Inquiry.find({
-    propertyId: { $in: propertyIds },
-  })
+  const inquiries = await Inquiry.find({ propertyId: { $in: propertyIds } })
     .sort({ createdAt: -1 })
     .limit(limit)
     .lean();
 
-  return inquiries.map((inq) => ({
-    ...inq,
-    id: inq._id.toString(),
-    createdAt: inq.createdAt?.toISOString(),
-  }));
+  return inquiries.map((inq) =>
+    toPlainObject({
+      ...inq,
+      id: inq._id.toString(),
+      createdAt: inq.createdAt?.toISOString(),
+    })
+  );
 }

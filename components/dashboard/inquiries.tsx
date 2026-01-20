@@ -15,7 +15,7 @@ export default function Inquiries() {
 
     getRecentInquiries().then((result) => {
       if (isMounted && result) {
-        setInquiries(result);
+        setInquiries(result as Inquiry[]);
         setLoading(false);
       }
     });
