@@ -13,15 +13,17 @@ export default function LoginPage() {
     useLoginHandler();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
-      <div className="w-full max-w-md px-6">
-        <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
-          <CardHeader className="text-center pb-2">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-6">
+      <div className="w-full max-w-md">
+        <Card className="border border-gray-200 dark:border-gray-800">
+          <CardHeader className="text-center pb-4">
             <Link href="/" className="flex flex-col items-center mb-4">
               <Logo size={60} href="" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-3">RoomFinder</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-3">
+                RoomFinder
+              </h2>
             </Link>
-            <CardTitle className="text-2xl">Welcome back</CardTitle>
+            <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
             <CardDescription>Sign in to your account</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -55,22 +57,25 @@ export default function LoginPage() {
                 {error && <ErrorMessage message={error} className="text-xs" />}
               </div>
               <div className="flex justify-end">
-                <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+                <Link
+                  href="/forgot-password"
+                  className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                >
                   Forgot password?
                 </Link>
               </div>
               <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                className="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white h-10 font-medium shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition-all"
               >
                 {isPending ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
-            <div className="text-center text-sm text-muted-foreground">
+            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
               Don&apos;t have an account?{" "}
-              <Link href="/signup" className="text-primary hover:underline">
+              <Link href="/signup" className="text-indigo-600 hover:text-indigo-700 font-semibold">
                 Sign up
               </Link>
             </div>

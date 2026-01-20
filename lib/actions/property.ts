@@ -61,9 +61,18 @@ export async function getPropertyById(id: string) {
 }
 
 export async function incrementPropertyViews(id: string) {
+  const session = await auth();
+
   await connectDB();
   try {
-    const property = await Property.findByIdAndUpdate(id, { $inc: { views: 1 } }).lean();
+    const property = await Property.findById(id).lean();
+
+    // Don't increment views or notify if owner is viewing their own property
+    if (property && session?.user?.id === property.ownerId) {
+      return;
+    }
+
+    await Property.findByIdAndUpdate(id, { $inc: { views: 1 } });
 
     // Create notification for property owner
     if (property) {
@@ -122,6 +131,22 @@ export async function getMyProperties() {
   if (!session?.user?.id) return [];
 
   await connectDB();
+
+  // Admin sees all properties
+  if (session.user.role === "admin") {
+    const properties = await Property.find({}).lean();
+    return JSON.parse(
+      JSON.stringify(
+        properties.map((property) => ({
+          ...property,
+          _id: undefined,
+          id: property._id.toString(),
+        }))
+      )
+    );
+  }
+
+  // Owner sees only their properties
   const properties = await Property.find({ ownerId: session.user.id }).lean();
   return JSON.parse(
     JSON.stringify(
@@ -188,7 +213,7 @@ export async function createProperty(data: PropertyFormData, imageFiles: File[])
   }
 }
 
-export async function updateProperty(id: string, data: Partial<PropertyType>) {
+export async function updateProperty(id: string, data: PropertyFormData, imageFiles?: File[]) {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
 
@@ -196,12 +221,39 @@ export async function updateProperty(id: string, data: Partial<PropertyType>) {
 
   const query = session.user.role === "admin" ? { _id: id } : { _id: id, ownerId: session.user.id };
 
-  const property = await Property.findOneAndUpdate(
-    query,
-    { ...data, lastUpdated: new Date() },
-    { new: true }
-  ).lean();
-  return property ? { ...property, id: property._id.toString() } : null;
+  let uploadedImages: string[] = [];
+
+  try {
+    // Get existing property
+    const existingProperty = await Property.findOne(query).lean();
+    if (!existingProperty) throw new Error("Property not found");
+
+    // Upload new images if provided
+    if (imageFiles && imageFiles.length > 0) {
+      const uploadPromises = imageFiles.map((file) => uploadImage(file));
+      uploadedImages = (await Promise.all(uploadPromises)) as string[];
+    }
+
+    // Merge existing images with new ones
+    const allImages = [...(existingProperty.images || []), ...uploadedImages];
+
+    const updateData = {
+      ...data,
+      images: allImages,
+      lastUpdated: new Date(),
+    };
+
+    const property = await Property.findOneAndUpdate(query, updateData, { new: true }).lean();
+    return property
+      ? JSON.parse(JSON.stringify({ ...property, id: property._id.toString() }))
+      : null;
+  } catch (error) {
+    if (uploadedImages.length) {
+      const { deleteImages } = await import("../cloudinary");
+      await deleteImages(uploadedImages);
+    }
+    throw error;
+  }
 }
 
 export async function deleteProperty(id: string) {

@@ -10,6 +10,21 @@ export async function getDashboardStats() {
 
   await connectDB();
 
+  // Admin sees all stats
+  if (session.user.role === "admin") {
+    const properties = await Property.find({}).lean();
+    const inquiries = await Inquiry.find({}).lean();
+    const totalViews = properties.reduce((sum, p: any) => sum + (p.views || 0), 0);
+
+    return {
+      totalProperties: properties.length,
+      totalViews,
+      totalInquiries: inquiries.length,
+      availableProperties: properties.filter((p: any) => p.availability === "available").length,
+    };
+  }
+
+  // Owner sees only their stats
   const properties = await Property.find({ ownerId: session.user.id }).lean();
   const propertyIds = properties.map((p) => p._id.toString());
 
@@ -33,6 +48,18 @@ export async function getRecentInquiries(limit = 3) {
 
   await connectDB();
 
+  // Admin sees all recent inquiries
+  if (session.user.role === "admin") {
+    const inquiries = await Inquiry.find({}).sort({ createdAt: -1 }).limit(limit).lean();
+
+    return inquiries.map((inq) => ({
+      ...inq,
+      id: inq._id.toString(),
+      createdAt: inq.createdAt?.toISOString(),
+    }));
+  }
+
+  // Owner sees only their property inquiries
   const properties = await Property.find({ ownerId: session.user.id }).lean();
   const propertyIds = properties.map((p) => p._id.toString());
 

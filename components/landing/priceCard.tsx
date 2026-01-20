@@ -1,11 +1,20 @@
+"use client";
+
 import { Property } from "@/lib/types/data";
 import { Mail, Phone } from "lucide-react";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface PriceCardProps {
   property: Property;
 }
 const PriceCard = ({ property }: PriceCardProps) => {
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  const isOwner = session?.user?.id === property.ownerId;
+
   return (
     <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg border sticky top-20">
       <div className="mb-6">
@@ -56,7 +65,13 @@ const PriceCard = ({ property }: PriceCardProps) => {
         </div>
       </div>
 
-      <Button className="w-full h-12 text-base font-semibold">Contact Owner</Button>
+      <Button
+        onClick={() => router.push(`/property/inquiry/${property.id}`)}
+        className="w-full h-12 text-base font-semibold"
+        disabled={isOwner}
+      >
+        {isOwner ? "Your Property" : "Contact Owner"}
+      </Button>
     </div>
   );
 };

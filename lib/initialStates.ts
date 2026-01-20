@@ -66,7 +66,7 @@ const DEV_PROPERTY: PropertyFormData = {
     phone: "9841234567",
   },
   images: [],
-  availability: "available"
+  availability: "available",
 };
 
 export const ADD_PROPERTY = process.env.NODE_ENV === "development" ? DEV_PROPERTY : EMPTY_PROPERTY;

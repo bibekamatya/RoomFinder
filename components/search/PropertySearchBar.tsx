@@ -1,16 +1,16 @@
 "use client";
 
-import { MapPin, Search, Loader2 } from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Card } from '@/components/ui/card'
-import { usePropertySearch } from '@/hooks/usePropertySearch';
+import { MapPin, Search, Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Card } from "@/components/ui/card";
+import { usePropertySearch } from "@/hooks/usePropertySearch";
 
 export default function PropertySearchBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { query, setQuery, properties, isPending } = usePropertySearch()
+  const { query, setQuery, properties, isPending } = usePropertySearch();
 
   return (
     <div className="max-w-3xl mx-auto mb-16 relative">
@@ -50,7 +50,7 @@ export default function PropertySearchBar() {
               <>
                 <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800 border-b">
                   <p className="text-xs text-muted-foreground">
-                    Found {properties.length} {properties.length === 1 ? 'property' : 'properties'}
+                    Found {properties.length} {properties.length === 1 ? "property" : "properties"}
                   </p>
                 </div>
                 <div className="divide-y">

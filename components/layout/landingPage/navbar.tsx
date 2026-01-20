@@ -22,6 +22,7 @@ const NavBar = () => {
       return [
         ...baseRoutes,
         { href: "/favorites", label: "Favorites" },
+        { href: "/my-inquiries", label: "Inquiries" },
         { href: "/add-property", label: "List Property" },
       ];
     }
@@ -36,11 +37,13 @@ const NavBar = () => {
   const routes = isAuthenticated ? getAuthenticatedRoutes() : publicRoutes;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg border-b border-gray-100 dark:border-gray-900">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
       <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Logo size={50} href="" />
-          <span className="text-xl font-bold text-gray-900 dark:text-white">RoomFinder</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            RoomFinder
+          </span>
         </Link>
         <div className="flex items-center gap-6">
           {routes.map((route) => {
@@ -49,9 +52,9 @@ const NavBar = () => {
               <Link
                 key={route.href}
                 href={route.href}
-                className={`text-sm font-medium transition-colors px-3 py-1.5 rounded-lg ${
+                className={`text-sm font-medium transition-all duration-200 px-3 py-1.5 rounded-lg ${
                   isActive
-                    ? "text-white bg-gradient-to-r from-purple-600 to-blue-600"
+                    ? "text-white bg-gradient-to-r from-indigo-600 to-indigo-700 shadow-lg shadow-indigo-500/30"
                     : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
               >
@@ -71,7 +74,7 @@ const NavBar = () => {
               </Link>
               <Button
                 asChild
-                className="rounded-full px-6 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                className="rounded px-5 h-9 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition-all"
               >
                 <Link href="/login">Sign In</Link>
               </Button>

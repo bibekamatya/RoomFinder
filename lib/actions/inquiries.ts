@@ -5,8 +5,19 @@ import { Inquiry, Property } from "../db/models";
 import { auth } from "../auth";
 
 export async function getInquiries() {
+  const session = await auth();
+  if (!session?.user?.id) return [];
+
   await connectDB();
-  const inquiries = await Inquiry.find({}).lean();
+
+  // Admin sees all
+  if (session.user.role === "admin") {
+    const inquiries = await Inquiry.find({}).lean();
+    return inquiries.map((inq) => ({ ...inq, id: inq._id.toString() }));
+  }
+
+  // Others see only their own
+  const inquiries = await Inquiry.find({ userId: session.user.id }).lean();
   return inquiries.map((inq) => ({ ...inq, id: inq._id.toString() }));
 }
 
@@ -30,6 +41,14 @@ export async function getReceivedInquiries() {
   if (!session?.user?.id) return [];
 
   await connectDB();
+
+  // Admin sees all inquiries
+  if (session.user.role === "admin") {
+    const inquiries = await Inquiry.find({}).lean();
+    return inquiries.map((inq) => ({ ...inq, id: inq._id.toString() }));
+  }
+
+  // Owner sees only their property inquiries
   const properties = await Property.find({ ownerId: session.user.id }).lean();
   const propertyIds = properties.map((r) => r._id.toString());
 
@@ -58,7 +77,7 @@ export async function createInquiry(data: {
   }
 
   const inquiry = await Inquiry.create({ ...data, userId: session.user.id });
-  
+
   // Create notification for property owner
   if (property) {
     const { Notification } = await import("../db/models");
@@ -70,8 +89,8 @@ export async function createInquiry(data: {
       relatedId: inquiry._id.toString(),
     });
   }
-  
-  return { ...inquiry.toObject(), id: inquiry._id.toString() };
+
+  return JSON.parse(JSON.stringify({ ...inquiry.toObject(), id: inquiry._id.toString() }));
 }
 
 export async function updateInquiryStatus(id: string, status: "pending" | "approved" | "rejected") {
@@ -90,7 +109,7 @@ export async function updateInquiryStatus(id: string, status: "pending" | "appro
   }
 
   const updated = await Inquiry.findByIdAndUpdate(id, { status }, { new: true }).lean();
-  
+
   // Create notification for tenant
   if (updated) {
     const { Notification } = await import("../db/models");
@@ -102,7 +121,7 @@ export async function updateInquiryStatus(id: string, status: "pending" | "appro
       relatedId: id,
     });
   }
-  
+
   return updated ? { ...updated, id: updated._id.toString() } : null;
 }
 
@@ -111,6 +130,14 @@ export async function deleteInquiry(id: string) {
   if (!session?.user?.id) throw new Error("Unauthorized");
 
   await connectDB();
+
+  // Admin can delete any inquiry
+  if (session.user.role === "admin") {
+    const result = await Inquiry.findByIdAndDelete(id);
+    return !!result;
+  }
+
+  // Others can only delete their own
   const result = await Inquiry.findOneAndDelete({
     _id: id,
     userId: session.user.id,

@@ -1,11 +1,12 @@
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PropertyFormData } from "@/lib/types/data";
 import { ADD_PROPERTY } from "@/lib/initialStates";
 import { propertySchema } from "@/lib/schema";
-import { createProperty } from "@/lib/actions/property";
+import toast from "react-hot-toast";
+import { createProperty, getPropertyById, updateProperty } from "@/lib/actions/property";
 
-export const useAddPropertyHandler = () => {
+export const useAddPropertyHandler = ({ propertyId }: { propertyId?: string | null }) => {
   const router = useRouter();
   const [formData, setFormData] = useState<PropertyFormData>(ADD_PROPERTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -16,6 +17,21 @@ export const useAddPropertyHandler = () => {
   const LOCATION_FIELDS = ["address", "city", "area"];
   const SPEC_FIELDS = ["size", "rooms", "bathrooms"];
   const HOUSE_RULES = ["smoking", "pets"];
+
+  console.log(formData);
+
+  useEffect(() => {
+    if (propertyId) {
+      getPropertyById(propertyId).then((data) => {
+        if (data) {
+          setFormData(data as PropertyFormData);
+          if (data.images?.length) {
+            setImagePreviews(data.images);
+          }
+        }
+      });
+    }
+  }, [propertyId]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
@@ -98,8 +114,8 @@ export const useAddPropertyHandler = () => {
     try {
       await propertySchema.validate(formData, { abortEarly: false });
 
-      // Validate images
-      if (imageFiles.length < 1) {
+      // Validate images - only required if no existing images
+      if (imageFiles.length < 1 && imagePreviews.length < 1) {
         setErrors({ images: "At least 1 image is required" });
         return;
       }
@@ -107,10 +123,14 @@ export const useAddPropertyHandler = () => {
       setErrors({});
       startTransition(async () => {
         try {
-          const response = await createProperty(formData, imageFiles);
-          router.push(`/properties/${response.id}`);
+          const response = propertyId
+            ? await updateProperty(propertyId, formData, imageFiles)
+            : await createProperty(formData, imageFiles);
+          router.push(`/property/${response.id}`);
+          toast.success(propertyId ? "Property Updated" : "Added Property");
         } catch (error) {
-          const message = error instanceof Error ? error.message : "Failed to create property";
+          toast.error(propertyId ? "Unable to update" : "Property Updated");
+          const message = error instanceof Error ? error.message : "Failed to save property";
           setErrors({ submit: message });
         }
       });

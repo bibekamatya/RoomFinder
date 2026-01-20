@@ -1,12 +1,12 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Property } from "@/lib/types/data";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, MapPin, Home, Edit, Trash2, Heart } from "lucide-react";
+import { Eye, MapPin, Home, Edit, Trash2, Bed, Bath } from "lucide-react";
+import { FavoriteButton } from "./FavoriteButton";
 
 interface PropertyCardProps {
   property: Property;
@@ -22,88 +22,93 @@ export default function PropertyCard({
   onDelete,
 }: PropertyCardProps) {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow group">
-      <Link href={`/property/${property.id}`}>
-        <div className="relative h-48 w-full bg-gray-200">
+    <Card className="group relative overflow-hidden rounded-xl border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl shadow-md hover:shadow-xl transition-all duration-300">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <Link href={`/property/${property.id}`} className="block">
+        <div className="relative h-44 w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
           {property.images?.[0] ? (
-            <Image src={property.images[0]} alt={property.title} fill className="object-cover" />
+            <Image
+              src={property.images[0]}
+              alt={property.title}
+              fill
+              className="object-cover group-hover:scale-110 transition-transform duration-500"
+            />
           ) : (
             <div className="h-full flex items-center justify-center">
-              <Home className="h-12 w-12 text-gray-400" />
+              <Home className="h-10 w-10 text-gray-300 dark:text-gray-600" />
             </div>
           )}
-          <div className="absolute top-3 right-3">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute top-2.5 right-2.5">
             <Badge
               className={
                 property.availability === "available"
-                  ? "bg-green-500"
+                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 text-xs shadow-lg shadow-emerald-500/30"
                   : property.availability === "rented"
-                    ? "bg-red-500"
-                    : "bg-yellow-500"
+                    ? "bg-gradient-to-r from-rose-500 to-red-500 text-white border-0 text-xs shadow-lg shadow-rose-500/30"
+                    : "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 text-xs shadow-lg shadow-amber-500/30"
               }
             >
               {property.availability}
             </Badge>
           </div>
-        </div>
-      </Link>
-      <CardContent className="p-4">
-        <Link href={`/property/${property.id}`}>
-          <h3 className="font-semibold text-lg mb-2 line-clamp-1 hover:text-blue-600">
-            {property.title}
-          </h3>
-        </Link>
-        <p className="text-sm text-muted-foreground flex items-center gap-1 mb-3">
-          <MapPin className="h-4 w-4" />
-          {property.location.area}, {property.location.city}
-        </p>
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <p className="text-2xl font-bold">NPR {property.price.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground">per month</p>
-          </div>
-          {property.views !== undefined && (
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Eye className="h-4 w-4" />
-              <span>{property.views}</span>
+          {!showActions && (
+            <div className="absolute top-2.5 left-2.5">
+              <FavoriteButton roomId={property.id} />
             </div>
           )}
         </div>
-        {showActions ? (
-          <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm" className="flex-1">
-              <Link href={`/property/${property.id}`}>
-                <Eye className="h-4 w-4 mr-1" />
-                View
-              </Link>
-            </Button>
-            {onEdit && (
-              <Button variant="outline" size="sm" onClick={() => onEdit(property.id)}>
-                <Edit className="h-4 w-4" />
-              </Button>
+        <div className="p-3 relative">
+          <h3 className="font-semibold text-base mb-1 line-clamp-1 text-gray-900 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            {property.title}
+          </h3>
+          <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
+            <MapPin className="h-3 w-3" />
+            <span className="truncate">{property.location.city}</span>
+          </div>
+          <div className="flex items-center gap-3 mb-2 text-xs text-gray-600 dark:text-gray-400">
+            {property.specifications.rooms && (
+              <div className="flex items-center gap-1">
+                <Bed className="h-3.5 w-3.5" />
+                <span>{property.specifications.rooms}</span>
+              </div>
             )}
-            {onDelete && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-red-600 hover:text-red-700"
-                onClick={() => onDelete(property.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+            {property.specifications.bathrooms && (
+              <div className="flex items-center gap-1">
+                <Bath className="h-3.5 w-3.5" />
+                <span>{property.specifications.bathrooms}</span>
+              </div>
+            )}
+            {property.views !== undefined && (
+              <div className="flex items-center gap-1 ml-auto">
+                <Eye className="h-3 w-3" />
+                <span>{property.views}</span>
+              </div>
             )}
           </div>
-        ) : (
-          <div className="flex gap-2">
-            <Button asChild className="flex-1">
-              <Link href={`/property/${property.id}`}>View Details</Link>
-            </Button>
-            <Button variant="outline" size="sm">
-              <Heart className="h-4 w-4" />
-            </Button>
+          <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
+            NPR {property.price.toLocaleString()}
+            <span className="text-xs font-normal text-gray-500 dark:text-gray-400">/mo</span>
           </div>
-        )}
-      </CardContent>
+        </div>
+      </Link>
+      {showActions && (
+        <div className="px-3 pb-3 flex gap-2">
+          <button
+            onClick={() => onEdit?.(property.id)}
+            className="flex-1 h-8 px-3 text-xs font-medium border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-1.5"
+          >
+            <Edit className="h-3.5 w-3.5" />
+            Edit
+          </button>
+          <button
+            onClick={() => onDelete?.(property.id)}
+            className="h-8 px-3 text-xs font-medium border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
     </Card>
   );
 }

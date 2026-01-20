@@ -44,15 +44,17 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
-      <div className="w-full max-w-md px-6">
-        <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
-          <CardHeader className="text-center pb-2">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-6">
+      <div className="w-full max-w-md">
+        <Card className="border border-gray-200 dark:border-gray-800">
+          <CardHeader className="text-center pb-4">
             <Link href="/" className="flex flex-col items-center mb-4">
               <Logo size={60} href="" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-3">RoomFinder</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-3">
+                RoomFinder
+              </h2>
             </Link>
-            <CardTitle className="text-2xl">Create an account</CardTitle>
+            <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
             <CardDescription>Sign up to start finding rooms</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -117,21 +119,21 @@ export default function SignupPage() {
               )}
               <Button
                 type="submit"
-                className="w-full bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                className="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white h-10 font-medium shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition-all"
                 disabled={loading}
               >
                 {loading ? "Creating account..." : "Create Account"}
               </Button>
             </form>
 
-            <div className="text-center text-sm text-muted-foreground">
+            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
               Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link href="/login" className="text-indigo-600 hover:text-indigo-700 font-semibold">
                 Sign in
               </Link>
             </div>
 
-            <p className="text-xs text-center text-muted-foreground">
+            <p className="text-xs text-center text-gray-500 dark:text-gray-400">
               First user becomes admin automatically
             </p>
           </CardContent>

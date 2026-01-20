@@ -96,8 +96,9 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div
-                    className={`w-3 h-3 rounded-full ${property.houseRules.smoking ? "bg-green-500" : "bg-red-500"
-                      }`}
+                    className={`w-3 h-3 rounded-full ${
+                      property.houseRules.smoking ? "bg-green-500" : "bg-red-500"
+                    }`}
                   />
                   <span className="text-sm">
                     Smoking {property.houseRules.smoking ? "Allowed" : "Not Allowed"}
@@ -105,8 +106,9 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                 </div>
                 <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div
-                    className={`w-3 h-3 rounded-full ${property.houseRules.pets ? "bg-green-500" : "bg-red-500"
-                      }`}
+                    className={`w-3 h-3 rounded-full ${
+                      property.houseRules.pets ? "bg-green-500" : "bg-red-500"
+                    }`}
                   />
                   <span className="text-sm">
                     Pets {property.houseRules.pets ? "Allowed" : "Not Allowed"}

@@ -9,6 +9,18 @@ export async function getFavorites() {
   if (!session?.user?.id) return [];
 
   await connectDB();
+
+  // Admin sees all favorites from all users
+  if (session.user.role === "admin") {
+    const users = await User.find({ favorites: { $exists: true, $ne: [] } }).lean();
+    const allFavoriteIds = users.flatMap((u) => u.favorites || []);
+    const properties = await Property.find({ _id: { $in: allFavoriteIds } }).lean();
+    return properties.map((property) => ({
+      ...property,
+      id: property._id.toString(),
+    }));
+  }
+
   const user = await User.findById(session.user.id).lean();
   if (!user?.favorites?.length) return [];
 

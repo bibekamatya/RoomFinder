@@ -5,6 +5,7 @@ import { getRecentInquiries } from "@/lib/actions";
 import { Inquiry } from "@/lib/types";
 import { InquiryItemSkeleton } from "@/components/skeletons/DashboardSkeleton";
 import { useEffect, useState } from "react";
+import { formatDate } from "@/lib/utils";
 
 export default function Inquiries() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -51,7 +52,7 @@ export default function Inquiries() {
                 .join("")
                 .toUpperCase()
                 .slice(0, 2);
-              const timeAgo = new Date(inq.createdAt).toLocaleDateString();
+              const timeAgo = formatDate(inq.createdAt);
               return (
                 <div
                   key={inq.id}

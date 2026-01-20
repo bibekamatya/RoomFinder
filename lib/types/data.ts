@@ -48,4 +48,7 @@ export interface Notification {
   createdAt: string;
 }
 
-export type PropertyFormData = Omit<Property, "id" | "ownerId" | "createdAt" | "updatedAt" | "views">;
+export type PropertyFormData = Omit<
+  Property,
+  "id" | "ownerId" | "createdAt" | "updatedAt" | "views"
+>;

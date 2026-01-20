@@ -72,7 +72,11 @@ const NotificationSchema = new mongoose.Schema(
     userId: { type: String, required: true },
     title: { type: String, required: true },
     message: { type: String, required: true },
-    type: { type: String, enum: ["inquiry_status", "new_inquiry", "general", "stale_property"], default: "general" },
+    type: {
+      type: String,
+      enum: ["inquiry_status", "new_inquiry", "general", "stale_property"],
+      default: "general",
+    },
     read: { type: Boolean, default: false },
     relatedId: { type: String },
   },
@@ -85,4 +89,5 @@ NotificationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 604800 });
 export const Property = mongoose.models.Property || mongoose.model("Property", PropertySchema);
 export const Inquiry = mongoose.models.Inquiry || mongoose.model("Inquiry", InquirySchema);
 export const User = mongoose.models.User || mongoose.model("User", UserSchema);
-export const Notification = mongoose.models.Notification || mongoose.model("Notification", NotificationSchema);
+export const Notification =
+  mongoose.models.Notification || mongoose.model("Notification", NotificationSchema);

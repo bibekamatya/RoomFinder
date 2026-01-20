@@ -21,22 +21,23 @@ export default function PropertyImageGallery({
   return (
     <div className="flex gap-4">
       {/* Thumbnail Sidebar */}
-      {images.length > 1 &&
+      {images.length > 1 && (
         <div className="flex flex-col gap-3 w-20">
           {images.map((image, index) => (
             <button
               key={index}
               onClick={() => setSelectedImage(index)}
-              className={`relative h-20 rounded-lg overflow-hidden border-2 transition ${selectedImage === index
-                ? "border-blue-600"
-                : "border-transparent hover:border-gray-300"
-                }`}
+              className={`relative h-20 rounded-lg overflow-hidden border-2 transition ${
+                selectedImage === index
+                  ? "border-blue-600"
+                  : "border-transparent hover:border-gray-300"
+              }`}
             >
               <Image src={image} alt={`${title} - ${index + 1}`} fill className="object-cover" />
             </button>
           ))}
         </div>
-      }
+      )}
 
       {/* Main Image */}
       <div className="flex-1 relative h-[500px] rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800">

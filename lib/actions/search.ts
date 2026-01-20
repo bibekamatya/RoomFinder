@@ -19,7 +19,11 @@ export async function searchProperties(query: string) {
     ],
   }).lean();
 
-  return JSON.parse(JSON.stringify(properties.map((property) => ({ ...property, _id: undefined, id: property._id.toString() }))));
+  return JSON.parse(
+    JSON.stringify(
+      properties.map((property) => ({ ...property, _id: undefined, id: property._id.toString() }))
+    )
+  );
 }
 
 export async function getCities() {

@@ -2,7 +2,14 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { Bell, Check, Trash2, X } from "lucide-react";
-import { getNotifications, getUnreadCount, markAsRead, markAllAsRead, deleteNotification, deleteAllNotifications } from "@/lib/actions/notifications";
+import {
+  getNotifications,
+  getUnreadCount,
+  markAsRead,
+  markAllAsRead,
+  deleteNotification,
+  deleteAllNotifications,
+} from "@/lib/actions/notifications";
 import { useRouter } from "next/navigation";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
@@ -33,7 +40,6 @@ export default function NotificationBell() {
     }, 30000);
     return () => clearInterval(interval);
   }, []);
-
 
   const handleNotificationClick = (notification: Notification) => {
     if (!notification.read) {
@@ -106,12 +112,22 @@ export default function NotificationBell() {
               {notifications.length > 0 && (
                 <div className="flex gap-2">
                   {unreadCount > 0 && (
-                    <Button size="sm" variant="ghost" onClick={handleMarkAllAsRead} className="text-xs h-7">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={handleMarkAllAsRead}
+                      className="text-xs h-7"
+                    >
                       <Check className="h-3 w-3 mr-1" />
                       Mark all read
                     </Button>
                   )}
-                  <Button size="sm" variant="ghost" onClick={handleDeleteAll} className="text-xs h-7 text-red-600 hover:text-red-700">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleDeleteAll}
+                    className="text-xs h-7 text-red-600 hover:text-red-700"
+                  >
                     <Trash2 className="h-3 w-3 mr-1" />
                     Clear all
                   </Button>
@@ -129,15 +145,25 @@ export default function NotificationBell() {
                   <div
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
-                    className={`group relative border-b last:border-b-0 hover:bg-accent transition-colors cursor-pointer ${!notification.read ? "bg-blue-50 dark:bg-blue-950/30" : "bg-muted/50"
-                      }`}
+                    className={`group relative border-b last:border-b-0 hover:bg-accent transition-colors cursor-pointer ${
+                      !notification.read ? "bg-blue-50 dark:bg-blue-950/30" : "bg-muted/50"
+                    }`}
                   >
                     <div className="flex items-center gap-2 p-3 pr-12">
                       <div className="h-8 w-8 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center shrink-0">
                         <Bell className="h-4 w-4 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs line-clamp-2" dangerouslySetInnerHTML={{ __html: notification.message.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>') }} />
+                        <p
+                          className="text-xs line-clamp-2"
+                          dangerouslySetInnerHTML={{
+                            __html: notification.message
+                              .replace(/&quot;/g, '"')
+                              .replace(/&amp;/g, "&")
+                              .replace(/&lt;/g, "<")
+                              .replace(/&gt;/g, ">"),
+                          }}
+                        />
                       </div>
                     </div>
                     <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">

@@ -11,7 +11,13 @@ import { User as UserType } from "@/lib/types";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
-  const [user, setUser] = useState<UserType>({ email: "", mobile: "", id: "", name: "", role: "user" });
+  const [user, setUser] = useState<UserType>({
+    email: "",
+    mobile: "",
+    id: "",
+    name: "",
+    role: "user",
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +51,9 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <div className="space-y-1">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-sm md:text-base text-muted-foreground">Manage your account preferences and security</p>
+        <p className="text-sm md:text-base text-muted-foreground">
+          Manage your account preferences and security
+        </p>
       </div>
 
       <div className="grid gap-4 md:gap-6 sm:grid-cols-2">
@@ -77,7 +85,9 @@ export default function SettingsPage() {
                 </div>
               )}
             </div>
-            <Button variant="outline" className="w-full">Edit Profile</Button>
+            <Button variant="outline" className="w-full">
+              Edit Profile
+            </Button>
           </CardContent>
         </Card>
 

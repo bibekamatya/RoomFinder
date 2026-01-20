@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getMyProperties } from "@/lib/actions";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Property } from "@/lib/types/data";
@@ -10,6 +11,7 @@ import { Plus, Home } from "lucide-react";
 import PropertyCard from "@/components/property/PropertyCard";
 
 export default function PropertiesPage() {
+  const router = useRouter();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,8 +29,7 @@ export default function PropertiesPage() {
   }, []);
 
   const handleEdit = (id: string) => {
-    // TODO: Navigate to edit page
-    console.log("Edit:", id);
+    router.push(`/dashboard/properties/add?id=${id}`);
   };
 
   const handleDelete = (id: string) => {
@@ -66,8 +67,11 @@ export default function PropertiesPage() {
             {properties.length} {properties.length === 1 ? "property" : "properties"} listed
           </p>
         </div>
-        <Button asChild className="bg-gradient-to-r from-purple-600 to-blue-600">
-          <Link href="/dashboard/add">
+        <Button
+          asChild
+          className="h-10 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors"
+        >
+          <Link href="/dashboard/properties/add">
             <Plus className="h-4 w-4 mr-2" />
             Add Property
           </Link>
@@ -82,7 +86,10 @@ export default function PropertiesPage() {
             </div>
             <h3 className="text-lg font-semibold mb-2">No properties yet</h3>
             <p className="text-muted-foreground mb-4">Start by adding your first property</p>
-            <Button asChild>
+            <Button
+              asChild
+              className="h-10 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors"
+            >
               <Link href="/dashboard/add">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Property

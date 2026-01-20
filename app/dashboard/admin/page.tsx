@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { DataTable } from "@/components/ui/data-table";
 import { getAllUsers } from "@/lib/actions/users";
 import { useEffect, useState } from "react";
+import { formatDate } from "@/lib/utils";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -28,7 +29,7 @@ export default function AdminDashboard() {
     {
       key: "createdAt",
       label: "Joined",
-      render: (user: any) => new Date(user.createdAt).toLocaleDateString(),
+      render: (user: any) => formatDate(user.createdAt),
     },
   ];
 
