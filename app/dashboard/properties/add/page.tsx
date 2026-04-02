@@ -1,6 +1,6 @@
 "use client";
 
-import PropertyForm from "@/components/property/propertyForm";
+import PropertyForm from "@/components/property/PropertyForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

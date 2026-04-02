@@ -8,15 +8,25 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { usePropertySearch } from "@/hooks/usePropertySearch";
 
-export default function PropertySearchBar() {
+interface PropertySearchProps {
+  variant?: "hero" | "slim";
+}
+
+export default function PropertySearch({ variant = "hero" }: PropertySearchProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { query, setQuery, properties, isPending } = usePropertySearch();
 
+  const isHero = variant === "hero";
+
   return (
-    <div className="max-w-3xl mx-auto mb-16 relative">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-3">
-        <div className="flex items-center gap-3 px-4 py-2">
-          <Search className="h-5 w-5 text-gray-400" />
+    <div className={`w-full relative ${isHero ? "max-w-3xl mx-auto mb-16" : ""}`}>
+      <div
+        className={`bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 ${
+          isHero ? "rounded-2xl shadow-xl p-3" : "rounded-lg shadow-sm p-0"
+        }`}
+      >
+        <div className={`flex items-center gap-3 ${isHero ? "px-4 py-2" : "px-2 py-1"}`}>
+          <Search className={`${isHero ? "h-5 w-5" : "h-4 w-4"} text-gray-400`} />
           <Input
             placeholder="Search by city, area, or property name..."
             className="border-0 shadow-none focus-visible:ring-0 bg-transparent"
@@ -27,7 +37,9 @@ export default function PropertySearchBar() {
             }}
             onFocus={() => setIsOpen(true)}
           />
-          {isPending && <Loader2 className="h-5 w-5 text-gray-400 animate-spin" />}
+          {isPending && (
+            <Loader2 className={`${isHero ? "h-5 w-5" : "h-4 w-4"} text-gray-400 animate-spin`} />
+          )}
         </div>
       </div>
 

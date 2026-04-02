@@ -2,25 +2,39 @@
 
 import { connectDB } from "../db/mongodb";
 import { Property, User, Inquiry } from "../db/models";
-import { Property as PropertyType, PropertyFormData } from "../types/data";
+import { PropertyFormData } from "../types/data";
 import { auth } from "../auth";
 import { uploadImage } from "../cloudinary";
 
 export async function getProperties(filters?: {
   city?: string;
-  propertyType?: string;
-  priceType?: string;
+  propertyType?: string | string[];
+  roomType?: string;
   minPrice?: number;
   maxPrice?: number;
+  amenities?: string[];
+  furnished?: boolean;
+  rooms?: number;
+  bathrooms?: number;
   availability?: string;
+  page?: number;
+  limit?: number;
 }) {
   await connectDB();
   const query: Record<string, unknown> = {};
 
   if (filters?.city) query["location.city"] = new RegExp(filters.city, "i");
-  if (filters?.propertyType) query.propertyType = filters.propertyType;
-  if (filters?.priceType) query.priceType = filters.priceType;
+
+  if (filters?.propertyType) {
+    query.propertyType = Array.isArray(filters.propertyType)
+      ? { $in: filters.propertyType }
+      : filters.propertyType;
+  }
+
+  if (filters?.roomType) query.roomType = filters.roomType;
+
   if (filters?.availability) query.availability = filters.availability;
+
   if (filters?.minPrice || filters?.maxPrice) {
     query.price = {
       ...(filters.minPrice && { $gte: filters.minPrice }),
@@ -28,15 +42,45 @@ export async function getProperties(filters?: {
     };
   }
 
-  const properties = await Property.find(query).lean();
+  if (filters?.amenities && filters.amenities.length > 0) {
+    query.amenities = { $all: filters.amenities };
+  }
+
+  if (filters?.furnished !== undefined) {
+    query["specifications.furnished"] = filters.furnished;
+  }
+
+  if (filters?.rooms) {
+    query["specifications.rooms"] = filters.rooms >= 3 ? { $gte: 3 } : filters.rooms;
+  }
+
+  if (filters?.bathrooms) {
+    query["specifications.bathrooms"] = filters.bathrooms >= 3 ? { $gte: 3 } : filters.bathrooms;
+  }
+
+  const page = filters?.page || 1;
+  const limit = filters?.limit || 20;
+  const skip = (page - 1) * limit;
+
+  const [properties, total] = await Promise.all([
+    Property.find(query).skip(skip).limit(limit).lean(),
+    Property.countDocuments(query),
+  ]);
+
   return JSON.parse(
-    JSON.stringify(
-      properties.map((property) => ({
+    JSON.stringify({
+      properties: properties.map((property) => ({
         ...property,
         _id: undefined,
         id: property._id.toString(),
-      }))
-    )
+      })),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    })
   );
 }
 

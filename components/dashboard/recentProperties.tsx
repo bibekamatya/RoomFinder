@@ -17,7 +17,7 @@ export default function RecentProperties() {
 
     getProperties().then((result) => {
       if (isMounted && result) {
-        setProperties(result);
+        setProperties(result.properties || []);
         setLoading(false);
       }
     });
@@ -44,7 +44,7 @@ export default function RecentProperties() {
                 <PropertyItemSkeleton key={i} />
               ))}
           </div>
-        ) : properties.length === 0 ? (
+        ) : !properties || properties.length === 0 ? (
           <div className="text-center py-8">
             <Home className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
             <p className="text-sm text-muted-foreground">No properties yet</p>

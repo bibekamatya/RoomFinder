@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eye, MapPin, Home, Edit, Trash2, Bed, Bath } from "lucide-react";
 import { FavoriteButton } from "./FavoriteButton";
+import { Button } from "../ui/button";
 
 interface PropertyCardProps {
   property: Property;
@@ -23,7 +24,7 @@ export default function PropertyCard({
 }: PropertyCardProps) {
   return (
     <Card className="group relative overflow-hidden rounded-xl border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl shadow-md hover:shadow-xl transition-all duration-300">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-linear-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <Link href={`/property/${property.id}`} className="block">
         <div className="relative h-44 w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
           {property.images?.[0] ? (
@@ -38,15 +39,15 @@ export default function PropertyCard({
               <Home className="h-10 w-10 text-gray-300 dark:text-gray-600" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="absolute top-2.5 right-2.5">
             <Badge
               className={
                 property.availability === "available"
-                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 text-xs shadow-lg shadow-emerald-500/30"
+                  ? "bg-linear-to-r from-emerald-500 to-teal-500 text-white border-0 text-xs shadow-lg shadow-emerald-500/30"
                   : property.availability === "rented"
-                    ? "bg-gradient-to-r from-rose-500 to-red-500 text-white border-0 text-xs shadow-lg shadow-rose-500/30"
-                    : "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 text-xs shadow-lg shadow-amber-500/30"
+                    ? "bg-linear-to-r from-rose-500 to-red-500 text-white border-0 text-xs shadow-lg shadow-rose-500/30"
+                    : "bg-linear-to-r from-amber-500 to-orange-500 text-white border-0 text-xs shadow-lg shadow-amber-500/30"
               }
             >
               {property.availability}
@@ -93,20 +94,22 @@ export default function PropertyCard({
         </div>
       </Link>
       {showActions && (
-        <div className="px-3 pb-3 flex gap-2">
-          <button
+        <div className="px-3 pb-3 flex gap-2 z-100">
+          <Button
             onClick={() => onEdit?.(property.id)}
-            className="flex-1 h-8 px-3 text-xs font-medium border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-1.5"
+            className="h-8 px-3 text-gray-600 hover:text-blue-500 hover:bg-blue-100 dark:hover:bg-red-950/20 bg-gray-200 transition-colors duration-300 ease-linear flex-1"
           >
             <Edit className="h-3.5 w-3.5" />
             Edit
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => onDelete?.(property.id)}
-            className="h-8 px-3 text-xs font-medium border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center"
+            variant="ghost"
+            size="sm"
+            className="h-8 px-3 text-gray-600 hover:text-red-500 hover:bg-red-100 dark:hover:bg-red-950/20 bg-gray-200 transition-colors duration-300 ease-linear "
           >
             <Trash2 className="h-3.5 w-3.5" />
-          </button>
+          </Button>
         </div>
       )}
     </Card>

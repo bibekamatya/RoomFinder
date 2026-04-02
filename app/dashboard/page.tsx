@@ -52,7 +52,7 @@ export default function OwnerDashboard() {
           asChild
           className="h-10 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors"
         >
-          <Link href="/dashboard/add">
+          <Link href="/dashboard/properties/add">
             <Plus className="h-4 w-4 mr-2" />
             Add Property
           </Link>

@@ -1,5 +1,7 @@
 "use client";
 import PropertyCard from "@/components/property/PropertyCard";
+import PropertyFilters from "@/components/property/PropertyFilters";
+import PropertySearchBar from "@/components/property/PropertySearch";
 import PropertyListSkeleton from "@/components/skeletons/PropertyListSkeleton";
 import { getProperties } from "@/lib/actions";
 import { Property } from "@/lib/types/data";
@@ -14,7 +16,7 @@ export default function PropertyPage() {
     startTransition(() => {
       getProperties().then((result) => {
         if (isMounted && result) {
-          setProperties(result);
+          setProperties(result.properties || []);
         }
       });
     });
@@ -27,7 +29,7 @@ export default function PropertyPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-6 py-12">
-        <div className="mb-10">
+        <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">
             Browse Properties
           </h1>
@@ -36,9 +38,16 @@ export default function PropertyPage() {
           </p>
         </div>
 
+        {/* Search & Filters */}
+        <div className="flex md:flex-row flex-col gap-3 mb-6 items-center">
+          <div className="flex-1">
+            <PropertySearchBar variant="slim" />
+          </div>
+          <PropertyFilters setProperties={setProperties} startTransition={startTransition} />
+        </div>
         {pending ? (
           <PropertyListSkeleton />
-        ) : properties.length === 0 ? (
+        ) : !properties || properties.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="h-16 w-16 rounded-xl bg-gray-200 dark:bg-gray-800 flex items-center justify-center mb-4">
               <Search className="h-8 w-8 text-gray-400" />
@@ -52,7 +61,7 @@ export default function PropertyPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {properties.map((property) => (
+            {properties?.map((property) => (
               <PropertyCard key={property.id} property={property} />
             ))}
           </div>

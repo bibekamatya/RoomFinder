@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getMyProperties } from "@/lib/actions";
+import { useEffect, useState, useTransition } from "react";
+import { deleteProperty, getMyProperties } from "@/lib/actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -9,19 +9,23 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Property } from "@/lib/types/data";
 import { Plus, Home } from "lucide-react";
 import PropertyCard from "@/components/property/PropertyCard";
+import toast from "react-hot-toast";
+import { Dialog } from "@/components/ui/dialog";
 
 export default function PropertiesPage() {
   const router = useRouter();
   const [properties, setProperties] = useState<Property[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
 
   useEffect(() => {
     let isMounted = true;
-    getMyProperties().then((result) => {
-      if (isMounted && result) {
-        setProperties(result);
-        setLoading(false);
-      }
+    startTransition(() => {
+      getMyProperties().then((result) => {
+        if (isMounted && result) {
+          setProperties(result);
+        }
+      });
     });
     return () => {
       isMounted = false;
@@ -34,10 +38,20 @@ export default function PropertiesPage() {
 
   const handleDelete = (id: string) => {
     // TODO: Show confirmation dialog
-    console.log("Delete:", id);
+    startTransition(async () => {
+      try {
+        const result = await deleteProperty(id);
+        if (result) {
+          toast.success("Property Deleted");
+          setProperties((prev) => prev.filter((p) => p.id !== id));
+        }
+      } catch {
+        toast.error("Failed to delete property");
+      }
+    });
   };
 
-  if (loading) {
+  if (pending) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -105,11 +119,34 @@ export default function PropertiesPage() {
               property={property}
               showActions
               onEdit={handleEdit}
-              onDelete={handleDelete}
+              onDelete={(id) => setDeleteId(id)}
             />
           ))}
         </div>
       )}
+      <Dialog
+        open={Boolean(deleteId)}
+        onOpenChange={() => setDeleteId(null)}
+        title="Delete Property"
+        maxWidth="max-w-md"
+      >
+        <div>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            Are you sure you want to delete this property? This action cannot be undone.
+          </p>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setDeleteId(null)} className="flex-1">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => deleteId && handleDelete(deleteId)}
+              className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

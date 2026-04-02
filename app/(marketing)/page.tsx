@@ -6,7 +6,6 @@ import {
   Clock,
   CheckCircle2,
   ArrowRight,
-  Sparkles,
   Home,
   Users,
   Star,
@@ -15,20 +14,18 @@ import {
   Search,
   MapPin,
   MessageSquare,
-  TrendingUp,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Logo from "@/components/Logo";
 import FeaturedRooms from "@/components/landing/featuredRooms";
-import PropertySearchBar from "@/components/search/PropertySearchBar";
+import PropertySearchBar from "@/components/property/PropertySearch";
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-900"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-indigo-600 via-indigo-700 to-indigo-900"></div>
 
         {/* Animated circles */}
         <div className="absolute top-20 right-20 h-64 w-64 animate-pulse rounded-full bg-indigo-500/30 blur-3xl"></div>
@@ -253,7 +250,7 @@ export default function LandingPage() {
                 viewport={{ once: true, margin: "-50px" }}
                 className="group rounded-xl border border-gray-100 bg-white dark:bg-gray-900 p-6 shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="mb-4 rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 flex h-12 w-12 items-center justify-center transition-transform group-hover:scale-110">
+                <div className="mb-4 rounded-lg bg-linear-to-r from-indigo-500 to-indigo-600 flex h-12 w-12 items-center justify-center transition-transform group-hover:scale-110">
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -319,7 +316,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-20 text-center text-white">
+      <section className="relative overflow-hidden bg-linear-to-r from-indigo-600 to-indigo-700 px-6 py-20 text-center text-white">
         {/* Animated circles */}
         <div className="absolute top-10 right-10 h-48 w-48 animate-pulse rounded-full bg-indigo-500/20 blur-3xl"></div>
         <div

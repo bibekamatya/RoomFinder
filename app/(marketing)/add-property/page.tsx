@@ -1,4 +1,4 @@
-import PropertyForm from "@/components/property/propertyForm";
+import PropertyForm from "@/components/property/PropertyForm";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
